@@ -38,7 +38,7 @@ public class Main {
                     System.out.println("4. Kaidah Cramer");
                     System.out.println("5. Kembali");
                     System.out.print("Pilih menu (1-5): ");
-                    int methodChoice = 0;
+                    int methodChoice;
 
                     try {
                         methodChoice = scanner.nextInt();  // Input pilihan metode SPL
