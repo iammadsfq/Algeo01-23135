@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 
@@ -36,4 +40,97 @@ public class Matrix {
             throw new IndexOutOfBoundsException("Indeks baris atau kolom berada di luar batas!");
         }
     }
+
+    public static Matrix readMatrixFromKeyboard() {
+        Scanner sc = new Scanner(System.in);
+
+        // Minta Dimensi Matrix
+        System.out.print("Jumlah Baris: ");
+        int rows = sc.nextInt();
+
+        System.out.print("Jumlah Kolom: ");
+        int cols = sc.nextInt();
+
+        // Buat Matrix kosong
+        Matrix matrix = new Matrix(rows, cols);
+
+        // Masukin value
+        System.out.println("Masukkan elemen matriks per baris");
+        for (int i = 0; i < rows; i++) {
+            System.out.print("Baris ke-" + (i+1) + ":");
+            for (int j = 0; j < cols; j++) {
+
+                double value = sc.nextDouble();
+                matrix.setElement(i, j, value);
+            }
+        }
+        return matrix;
+    }
+    public static Matrix readMatrixFromFile(String fileName) {
+        Matrix matrix = null;
+
+        try {
+            // Create a File object to open the file
+            File file = new File(fileName);
+            Scanner sc = new Scanner(file);
+
+            // Temporary list to store rows of matrix values
+            List<double[]> tempMatrix = new ArrayList<>();
+            int cols = -1;
+
+            // Read each line from the file
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] values = line.trim().split("\\s+"); // Split by whitespace
+
+                // Convert the string values to doubles
+                double[] row = new double[values.length];
+                for (int i = 0; i < values.length; i++) {
+                    row[i] = Double.parseDouble(values[i]);
+                }
+
+                // Check if the number of columns is consistent
+                if (cols == -1) {
+                    cols = values.length; // Set the number of columns for the first row
+                } else if (cols != values.length) {
+                    throw new IllegalArgumentException("Jumlah Kolom Tidak Konsisten!");
+                }
+                // Add the row to the temp matrix list
+                tempMatrix.add(row);
+            }
+
+            // Now create the matrix with calculated rows and cols
+            int rows = tempMatrix.size();
+            matrix = new Matrix(rows, cols);
+
+            // Populate the matrix with the values from the temp list
+            for (int i = 0; i < rows; i++) {
+                double[] row = tempMatrix.get(i);
+                for (int j = 0; j < cols; j++) {
+                    matrix.setElement(i, j, row[j]);
+                }
+            }
+
+            sc.close();  // Close the scanner after reading
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File '" + fileName + "' tidak ditemukan.");
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Terdapat kesalahan format angka dalam konten file.");
+        }
+
+        return matrix;  // Return the populated matrix
+    }
+
+    public void TulisMatrix() {
+        // Menampilkan Matrix ke layar
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                // \t (tab space) untuk alignment
+                System.out.print(this.contents[i][j] + "\t");
+            }
+            System.out.println(); // next row
+        }
+    }
+
+
 }
