@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -120,6 +119,90 @@ public class Matrix {
 
         return matrix;  // Return the populated matrix
     }
+    public static Matrix readNxNMatrixFromKeyboard() {
+        Scanner sc = new Scanner(System.in);
+
+        // Minta ukuran matriks NxN
+        System.out.print("Masukkan N (ukuran matriks NxN): ");
+        int n = sc.nextInt();
+
+        // Buat Matrix kosong NxN
+        Matrix matrix = new Matrix(n, n);
+
+        // Masukkan nilai-nilai elemen matriks
+        System.out.println("Masukkan elemen matriks per baris");
+        for (int i = 0; i < n; i++) {
+            System.out.print("Baris ke-" + (i+1) + ": ");
+            for (int j = 0; j < n; j++) {
+                double value = sc.nextDouble();
+                matrix.setElement(i, j, value);
+            }
+        }
+        return matrix;
+    }
+    public static Matrix readNxNMatrixFromFile(String fileName) {
+        Matrix matrix = null;
+
+        try {
+            // Create a File object to open the file
+            File file = new File(fileName);
+            Scanner sc = new Scanner(file);
+
+            // Temporary list to store rows of matrix values
+            List<double[]> tempMatrix = new ArrayList<>();
+            int n = -1;  // This will represent both rows and columns for an NxN matrix
+
+            // Read each line from the file
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] values = line.trim().split("\\s+"); // Split by whitespace
+
+                // Convert the string values to doubles
+                double[] row = new double[values.length];
+                for (int i = 0; i < values.length; i++) {
+                    row[i] = Double.parseDouble(values[i]);
+                }
+
+                // Check if the matrix is square (N x N)
+                if (n == -1) {
+                    n = values.length; // Set N from the first row's length
+                } else if (n != values.length) {
+                    throw new IllegalArgumentException("Matrix bukan NxN. Kolom tidak konsisten!");
+                }
+
+                // Add the row to the temp matrix list
+                tempMatrix.add(row);
+            }
+
+            // Validate if the matrix is square
+            if (tempMatrix.size() != n) {
+                throw new IllegalArgumentException("Matrix bukan NxN. Baris tidak konsisten!");
+            }
+
+            // Create the NxN matrix
+            matrix = new Matrix(n, n);
+
+            // Populate the matrix with the values from the temp list
+            for (int i = 0; i < n; i++) {
+                double[] row = tempMatrix.get(i);
+                for (int j = 0; j < n; j++) {
+                    matrix.setElement(i, j, row[j]);
+                }
+            }
+
+            sc.close();  // Close the scanner after reading
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File '" + fileName + "' tidak ditemukan.");
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Terdapat kesalahan format angka dalam konten file.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return matrix;  // Return the populated matrix
+    }
+
+
 
     public void TulisMatrix() {
         // Menampilkan Matrix ke layar

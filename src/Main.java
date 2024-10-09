@@ -62,16 +62,13 @@ public class Main {
                                 solveByGaussElimination();
                                 break;
                             case 2:
-                                System.out.println("Memilih Metode Eliminasi Gauss-Jordan.\n");
-                                // solveByGaussJordanElimination();
+                                solveByGaussJordanElimination();
                                 break;
                             case 3:
-                                System.out.println("Memilih Metode Matriks Balikan.\n");
-                                // solveByInverseMatrix();
+                                solveByInverseMatrix();
                                 break;
                             case 4:
-                                System.out.println("Memilih Kaidah Cramer.\n");
-                                // solveByCramerRule();
+                                solveByCramerRule();
                                 break;
                             case 5:
                                 System.out.println("Kembali ke menu utama.\n");
@@ -110,16 +107,13 @@ public class Main {
 
                         switch (methodChoice) {
                             case 1:
-                                System.out.println("Memilih Metode Ekspansi Kofaktor.");
-                                // determinantByCofactorExpansion();
+                                determinantByCofactorExpansion();
                                 break;
                             case 2:
-                                System.out.println("Memilih Metode Reduksi Baris");
-                                // determinantByRowReduction();
+                                determinantByRowReduction();
                                 break;
                             case 3:
-                                System.out.println("Memilih Metode Sarrus");
-                                // determinantBySarrus();
+                                determinantBySarrus();
                                 break;
                             case 4:
                                 System.out.println("Kembali ke menu utama.");
@@ -130,6 +124,11 @@ public class Main {
                 case 3:
                     System.out.println("Anda memilih: Matriks Balikan");
                     delay(1000);
+                    System.out.println("PILIH METODE INVERS");
+                    System.out.println("1. Metode Gauss Jordan [A|I]");
+                    System.out.println("2. Metode Adjoin");
+                    System.out.println("3. Kembali");
+                    System.out.print("Pilih menu (1-3): ");
                     break;
                 case 4:
                     System.out.println("Anda memilih: Interpolasi Polinom");
@@ -161,7 +160,7 @@ public class Main {
 
     //START OF SPL
     public static void solveByGaussElimination() { //dari main
-        System.out.println("Memilih Metode Eliminasi Gauss.");
+        System.out.println("Memilih Metode Eliminasi Gauss.\n");
         delay(1000);
         // minta pilih metode input
         System.out.println("PILIH METODE INPUT");
@@ -173,7 +172,7 @@ public class Main {
 
         while (true) {
             try {
-                System.out.print("Masukkan pilihan Anda (1/2): ");
+                System.out.print("Masukkan pilihan Anda (1-2): ");
                 inputChoice = sc.nextInt();
 
                 switch (inputChoice) {
@@ -194,7 +193,7 @@ public class Main {
                         continue; // Input lagi
                 }
 
-                break;  // Exit loop if valid input method is selected
+                break;  // Keluar kalo input valid
             } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
                 sc.next();  // Clear the invalid input from the scanner buffer
@@ -210,7 +209,7 @@ public class Main {
         }
     }
     public static void solveByGaussJordanElimination() {
-        System.out.println("Memilih Metode Eliminasi Gauss Jordan.");
+        System.out.println("Memilih Metode Eliminasi Gauss Jordan.\n");
         delay(1000);
         // minta pilih metode input
         System.out.println("PILIH METODE INPUT");
@@ -259,26 +258,270 @@ public class Main {
         }
     }
     public static void solveByInverseMatrix() {
+        System.out.println("Memilih Metode Matrix Balikan.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
 
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        System.out.println("*Penyelesaian SPL menggunakan matriks balikan hanya berfungsi untuk SPL dengan matriks koefisien simetris");
+                        System.out.println("*Masukkan Augmented Matrix berdimensi n*(n+1)");
+                        delay(2000);
+                        matrix = Matrix.readMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.println("*Penyelesaian SPL menggunakan matriks balikan hanya berfungsi untuk SPL dengan jumlah persamaan sama dengan jumlah variabel");
+                        System.out.println("*Masukkan Augmented Matrix berdimensi n*(n+1)");
+                        delay(2000);
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            if (matrix.cols == matrix.rows +1) {
+                // solveInverseMatrix(matrix); // NAH BIKIN YG INI
+                matrix.TulisMatrix();
+            } else {
+                System.out.println("Dimensi " + matrix.rows + "x" + matrix.cols + " tidak valid untuk penyelesaian SPL dengan matriks balikan.");
+                delay(2000);
+            }
+
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
     }
     public static void solveByCramerRule() {
+        System.out.println("Memilih Metode Kaidah Cramer.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
 
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        System.out.println("*Penyelesaian SPL menggunakan kaidah cramer hanya berfungsi untuk SPL dengan jumlah persamaan sama dengan jumlah variabel");
+                        System.out.println("*Masukkan Augmented Matrix berdimensi n*(n+1)");
+                        delay(2000);
+                        matrix = Matrix.readMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.println("*Penyelesaian SPL menggunakan kaidah cramer hanya berfungsi untuk SPL dengan jumlah persamaan sama dengan jumlah variabel");
+                        System.out.println("*Masukkan Augmented Matrix berdimensi n*(n+1)");
+                        delay(2000);
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            if (matrix.cols == matrix.rows +1) {
+                // solveCramerRule(matrix); // NAH BIKIN YG INI
+                matrix.TulisMatrix();
+            } else {
+                System.out.println("Dimensi " + matrix.rows + "x" + matrix.cols + " tidak valid untuk penyelesaian SPL dengan kaidah cramer.");
+                delay(2000);
+            }
+
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
     }
     //END OF SPL
 
     //START OF DETERMINAN
     public static void determinantByCofactorExpansion() {
+        System.out.println("Memilih Metode Ekspansi Kofaktor.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
 
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        matrix = Matrix.readNxNMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readNxNMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            // calculateDetByCofactorExpansion(matrix);
+            matrix.TulisMatrix();
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
     }
     public static void determinantByRowReduction() {
+        System.out.println("Memilih Metode Ekspansi Kofaktor.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
 
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        matrix = Matrix.readNxNMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readNxNMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            // calculateDetByRowReduction();
+            matrix.TulisMatrix();
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
     }
     public static void determinantBySarrus() {
+        System.out.println("Memilih Metode Ekspansi Kofaktor.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
 
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        matrix = Matrix.readNxNMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readNxNMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            // calculateDetBySarrus();
+            matrix.TulisMatrix();
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
     }
     //END OF DETERMINAN
 
-    //START OF INVERS
+    //START OF INVER
     //END OF INVERS
 
     public static void delay(int ms) {
