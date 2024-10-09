@@ -202,7 +202,8 @@ public class Main {
 
         // Proceed with Gaussian Elimination
         if (matrix != null) {
-            // solveGaussianElimination(matrix); // NAH BIKIN YG INI
+            // solveGaussianElimination(matrix); //Realisasi di file SPL.java
+            // ^Memproses matriks sampai menulis solusi
             matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
@@ -503,25 +504,23 @@ public class Main {
                         System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
                         continue; // Input lagi
                 }
+                if (matrix.rows != 3) {
+                    System.out.println("Metode Sarrus hanya menerima matrix 3x3!");
+                } else {
+                    break;  // Keluar kalo input valid
+                }
 
-                break;  // Keluar kalo input valid
             } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
                 sc.next();  // Clear the invalid input from the scanner buffer
             }
         }
-
-        // Proceed
-        if (matrix != null) {
-            // calculateDetBySarrus();
-            matrix.TulisMatrix();
-        } else {
-            System.out.println("Terjadi kesalahan dalam membaca matrix.");
-        }
+        Determinan.calculateDetBySarrus(matrix);
+        delay(1000);
     }
     //END OF DETERMINAN
 
-    //START OF INVER
+    //START OF INVERS
     //END OF INVERS
 
     public static void delay(int ms) {
