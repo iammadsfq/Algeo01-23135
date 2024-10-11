@@ -55,5 +55,46 @@ public class OperasiMatrix {
         }
         return result;
     }
+    // Fungsi untuk melakukan ekspansi kofaktor
+    public static double cofactorExpansion(Matrix matrix, int n) {
+        double det = 0.0;
 
+        // Jika matrix bersifat 1x1, determinan adalah elemen itu sendiri
+        if (n == 1) {
+            return matrix.contents[0][0];
+        }
+
+        // Jika matrix bersifat 2x2
+        if (n == 2) {
+            return matrix.contents[0][0] * matrix.contents[1][1] - matrix.contents[0][1] * matrix.contents[1][0];
+        }
+
+        // Membuat matriks minor
+        Matrix minor = new Matrix(n - 1, n - 1);
+
+        for (int col = 0; col < n; col++) {
+            getMinor(matrix, minor, 0, col, n);
+
+            // Ekspansikan kofaktor dengan rumus (-1)^(i+j)
+            det += Math.pow(-1, col) * matrix.contents[0][col] * cofactorExpansion(minor, n - 1);
+        }
+        return det;
+    }
+    // Fungsi untuk mendapatkan matriks minor
+    public static void getMinor(Matrix matrix, Matrix minor, int rowToSkip, int colToSkip, int n) {
+        int rowMinor = 0, colMinor = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (i == rowToSkip) continue;
+
+            colMinor = 0;
+            for (int j = 0; j < n; j++) {
+                if (j == colToSkip) continue;
+
+                minor.contents[rowMinor][colMinor] = matrix.contents[i][j];
+                colMinor++;
+            }
+            rowMinor++;
+        }
+    }
 }

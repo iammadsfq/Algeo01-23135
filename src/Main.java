@@ -419,7 +419,7 @@ public class Main {
 
         // Proceed
         if (matrix != null) {
-            // calculateDetByCofactorExpansion(matrix);
+            Determinan.calculateDetByCofactorExpansion(matrix);
             matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
