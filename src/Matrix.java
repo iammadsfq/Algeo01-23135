@@ -20,6 +20,7 @@ public class Matrix {
     public int getLastRow() { //Get this.rows
         return this.rows - 1;
     }
+
     public int getLastCol() { //Get this.cols
         return this.cols - 1;
     }

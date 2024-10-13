@@ -129,6 +129,36 @@ public class Main {
                     System.out.println("2. Metode Adjoin");
                     System.out.println("3. Kembali");
                     System.out.print("Pilih menu (1-3): ");
+                { //supaya gak bentrok dgn case lain, ini di kurung kurawal
+                    int methodChoice;
+
+                    try {
+                        methodChoice = scanner.nextInt();  // Input pilihan metode SPL
+                    } catch (java.util.InputMismatchException er) {
+                        System.out.println("Input tidak valid! Silakan masukkan angka.");
+                        delay(1000);
+                        scanner.next(); // Clear the invalid input
+                        continue; // Skip to the next iteration of the loop
+                    }
+
+                    while (methodChoice < 1 || methodChoice > 3) {
+                        System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+                        System.out.print("Pilih menu (1-3): ");
+                        methodChoice = scanner.nextInt();
+                    }
+
+                    switch (methodChoice) {
+                        case 1:
+                            //inversByGaussJordan();
+                            break;
+                        case 2:
+                            inversByAdjoint();
+                            break;
+                        case 3:
+                            System.out.println("Kembali ke menu utama.");
+                            break;
+                    }
+                }
                     break;
                 case 4:
                     System.out.println("Anda memilih: Interpolasi Polinom");
@@ -520,6 +550,52 @@ public class Main {
     //END OF DETERMINAN
 
     //START OF INVERS
+    public static void inversByAdjoint() {
+        System.out.println("Memilih Metode Adjoint.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
+
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        matrix = Matrix.readNxNMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readNxNMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            Invers.getInversByAdjoint(matrix);
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
+    }
     //END OF INVERS
 
     public static void delay(int ms) {

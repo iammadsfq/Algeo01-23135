@@ -97,4 +97,38 @@ public class OperasiMatrix {
             rowMinor++;
         }
     }
+
+    // Fungsi untuk menghasilkan Invers Adjoint
+    public static Matrix returnInversByAdjoint(Matrix matrix) {
+        int n = matrix.rows;
+        Matrix adjoint = resultAdjoint(matrix);
+        double determinant = OperasiMatrix.cofactorExpansion(matrix, matrix.rows);
+
+        Matrix invers = new Matrix(n, n);
+
+        // Adjoin dibagi dengan determinan untuk mendapat nilai invers
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                invers.contents[i][j] = adjoint.contents[i][j] / determinant;
+            }
+        }
+
+        return invers;
+    }
+    public static Matrix resultAdjoint(Matrix matrix) {
+        int n = matrix.rows;
+        Matrix adjoint = new Matrix(n, n);
+        double determinant = OperasiMatrix.cofactorExpansion(matrix, matrix.rows);
+        if (determinant == 0) { // Jika determinan 0, matriks tidak memiliki invers
+            throw new ArithmeticException("Matriks tidak memiliki invers karena determinan adalah 0.");
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                Matrix minor = new Matrix(n - 1, n - 1);
+                OperasiMatrix.getMinor(matrix, minor, i, j, n);
+                adjoint.contents[j][i] = Math.pow(-1, i + j) * OperasiMatrix.cofactorExpansion(minor, n - 1);
+            }
+        }
+        return adjoint;
+    }
 }
