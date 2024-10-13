@@ -63,4 +63,16 @@ public class SPL {
 
         return hasil;
     }
+
+    //    public static void solveGaussianElimination(Matrix m) {
+//
+//        Matrix result = copyMatrix(m);
+//        Matrix ref = OperasiMatrix.ReductionREF(result);
+//    }
+//
+//    public static boid solveGaussianJordanElimination(Matrix m){
+//        Matrix result = copyMatrix(m);
+//        Matrix ref = OperasiMatrix.ReductionREF(result);
+//    }
+//}
 }

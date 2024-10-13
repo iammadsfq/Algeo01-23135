@@ -131,4 +131,89 @@ public class OperasiMatrix {
         }
         return adjoint;
     }
+
+    //Fungsi mengubah bentuk matriks ke dalam bentuk matriks eselon baris
+    public static Matrix REF(Matrix m) {
+        Matrix result = copyMatrix(m);
+        int rows = result.rows;
+        int cols = result.cols;
+
+        // Menentukan pivot sebagai elemen selain nol dari kolom ujung kiri
+        for (int i = 0; i < rows; i++) {
+            int maxRow = i;
+            for (int k = i + 1; k < rows; k++) {
+                if (Math.abs(result.contents[k][i]) > Math.abs(result.contents[maxRow][i])) {
+                    maxRow = k;
+                }
+            }
+
+            // Menukar apabila ditemukan pivot dibawah current baris
+            if (maxRow != i) {
+                result = swapTwoRows(result, i, maxRow);
+            }
+
+            //jika pivot tidak ada selain nol
+            if (result.contents[i][i] == 0) {
+                continue;
+            }
+
+            //Membagi baris dengan pivot
+            double pivot = result.contents[i][i];
+            for (int j = i; j < cols; j++) {
+                result.contents[i][j] /= pivot;
+            }
+
+            // mengubah elemen dibawah pivot menjadi nol
+            for (int j = i + 1; j < rows; j++) {
+                if (result.contents[j][i] != 0) {
+                    double factor = result.contents[j][i];
+                    for (int k = i; k < cols; k++) {
+                        result.contents[j][k] -= factor * result.contents[i][k];
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static Matrix ReductionREF(Matrix m){
+        Matrix result = copyMatrix(m);
+        Matrix ref = REF(result); //Memanggil REF untuk melanjutkan Matriks eselon baris tereduksi
+        int rows = result.rows;
+        int cols = result.cols;
+
+        for (int i = 0; i < rows; i++){
+            // mengubah elemen diatas pivot menjadi nol
+            for (int j = 0; j < i; j++) {
+                if (ref.contents[j][i] != 0) {
+                    double factor = ref.contents[j][i];
+                    for (int k = i; k < cols; k++) {
+                        ref.contents[j][k] -= factor * ref.contents[i][k];
+                    }
+                }
+            }}
+        return ref;
+
+    }
+
+
+    // Menukar dua baris
+    public static Matrix swapTwoRows(Matrix m, int row1, int row2) {
+        Matrix result = copyMatrix(m);
+
+        double[] tempRow = new double[m.cols];
+        for (int j = 0; j < result.cols; j++) {
+            tempRow[j] = result.contents[row1][j];
+        }
+        for (int j = 0; j < result.cols; j++) {
+            result.contents[row1][j] = result.contents[row2][j];
+        }
+        for (int j = 0; j < result.cols; j++) {
+            result.contents[row2][j] = tempRow[j];
+        }
+
+        return result;
+    }
+
 }
