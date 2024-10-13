@@ -18,4 +18,49 @@ public class SPL {
         IO.tulisSolusiSPL(solutions);
         IO.tekanEnterUntukKembali();
     }
+    // Fungsi untuk menyelesaikan SPL menggunakan metode invers matriks
+    public static void SolveInverseMatrix(Matrix matrix) {
+        Matrix matrix_A = OperasiMatrix.getMatrixKoefisien(matrix);
+        Matrix vektor_B = OperasiMatrix.getVektorKonstanta(matrix);
+        Matrix hasil = SPLByInverseMatrix(matrix_A, vektor_B);
+        String[] solutions = new String[hasil.rows];
+        //Iterasi untuk hasil solution
+        for (int i = 0; i < hasil.rows; i++) {
+            solutions[i] = String.valueOf(hasil.contents[i][0]);
+        }
+        IO.tulisSolusiSPL(solutions);
+        IO.tekanEnterUntukKembali();
+    }
+
+    public static Matrix SPLByInverseMatrix(Matrix matrixKoefisien, Matrix vektorKonstanta) {
+        // Periksa apakah matriks koefisien bersifat persegi
+        if (matrixKoefisien.rows != matrixKoefisien.cols) {
+            throw new IllegalArgumentException("Matriks koefisien harus persegi (NxN) untuk menggunakan metode invers.");
+        }
+
+        // Invers dari matriks koefisien dihitung, lalu dikalikan dengan konstanta
+        Matrix inversMatrix = OperasiMatrix.returnInversByAdjoint(matrixKoefisien);
+        Matrix hasil = kalikanMatriks(inversMatrix, vektorKonstanta);
+
+        return hasil;
+    }
+
+    // Fungsi untuk mengalikan dua matriks
+    public static Matrix kalikanMatriks(Matrix m1, Matrix m2) {
+        if (m1.cols != m2.rows) {
+            throw new IllegalArgumentException("Jumlah kolom matriks pertama harus sama dengan jumlah baris matriks kedua.");
+        }
+
+        Matrix hasil = new Matrix(m1.rows, m2.cols);
+        for (int i = 0; i < m1.rows; i++) {
+            for (int j = 0; j < m2.cols; j++) {
+                hasil.contents[i][j] = 0;
+                for (int k = 0; k < m1.cols; k++) {
+                    hasil.contents[i][j] += m1.contents[i][k] * m2.contents[k][j];
+                }
+            }
+        }
+
+        return hasil;
+    }
 }

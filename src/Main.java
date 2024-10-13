@@ -336,7 +336,7 @@ public class Main {
         // Proceed
         if (matrix != null) {
             if (matrix.cols == matrix.rows +1) {
-                // solveInverseMatrix(matrix); // NAH BIKIN YG INI
+                SPL.SolveInverseMatrix(matrix);
                 matrix.TulisMatrix();
             } else {
                 System.out.println("Dimensi " + matrix.rows + "x" + matrix.cols + " tidak valid untuk penyelesaian SPL dengan matriks balikan.");
