@@ -53,7 +53,6 @@ public class BicubicInterpolation {
         }
         //Baca a dan b END
         bicubicSplineInterpolation(matrix, a, b);
-        sc.close();
     }
     public static void bicubicSplineInterpolation(Matrix input, double a, double b) {
         //bikin vektor_y
@@ -113,7 +112,7 @@ public class BicubicInterpolation {
         //matrix_x END
 
         //bikin invers_x
-        Matrix invers_x = OperasiMatrix.returnInversByAdjoint(matrix_x);
+        Matrix invers_x = OperasiMatrix.returnInversByGaussJordan(matrix_x, 16);
         invers_x.TulisMatrix();
         System.out.println("\n");
         //vektor_a = kalikanMatrix(invers_x,vektor_y)
@@ -123,6 +122,8 @@ public class BicubicInterpolation {
         double result = returnBicubicInterpolation(vektor_a, a, b);
         //result = returnBicubicInterpolation(vektor_a, a, b)
         System.out.println(result);
+        Main.delay(1000);
+        IO.tekanEnterUntukKembali();
     }
     public static void bacaFileBicubicInterpolation() {
 
@@ -130,8 +131,8 @@ public class BicubicInterpolation {
     public static double returnBicubicInterpolation(Matrix vektor_a, double x, double y) {
         double result = 0;
         int i,j;
-        for (j = 0; j < 3; j++) {
-            for (i = 0; i < 3; i++) {
+        for (j = 0; j < 4; j++) {
+            for (i = 0; i < 4; i++) {
                 result += ekspansiSigmaHasil(x,y,i,j)*vektor_a.contents[i+4*j][0];
             }
         }
