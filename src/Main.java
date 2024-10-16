@@ -149,7 +149,7 @@ public class Main {
 
                     switch (methodChoice) {
                         case 1:
-                            //inversByGaussJordan();
+                            inversByRowReduction();
                             break;
                         case 2:
                             inversByAdjoint();
@@ -498,7 +498,7 @@ public class Main {
 
         // Proceed
         if (matrix != null) {
-            // calculateDetByRowReduction();
+            Determinan.calculateDetByRowReduction(matrix);
             matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
@@ -594,6 +594,52 @@ public class Main {
         // Proceed
         if (matrix != null) {
             Invers.getInversByAdjoint(matrix);
+        } else {
+            System.out.println("Terjadi kesalahan dalam membaca matrix.");
+        }
+    }
+    public static void inversByRowReduction() {
+        System.out.println("Memilih Metode Gauss-Jordan.\n");
+        delay(1000);
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+        Matrix matrix = null;
+
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        matrix = Matrix.readNxNMatrixFromKeyboard(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        matrix = Matrix.readNxNMatrixFromFile(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+
+                break;  // Keluar kalo input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+        }
+
+        // Proceed
+        if (matrix != null) {
+            Invers.getInversByRowReduction(matrix);
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }

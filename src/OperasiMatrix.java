@@ -133,7 +133,7 @@ public class OperasiMatrix {
     }
 
     //Fungsi mencari determinan dengan reduksi baris
-    public static double returnDetbyRowReduction(Matrix m){
+    public static double returnDetByRowReduction(Matrix m){
         Matrix result = copyMatrix(m);
         int rows = result.rows;
         int cols = result.cols;
@@ -251,7 +251,7 @@ public class OperasiMatrix {
 
         for (int i = 0; i < N; i++) {
             augmented.contents[i][i + N] = 1;
-
+        }
         augmented = ReductionREF(augmented);
 
         Matrix inverse = new Matrix(N, N);
