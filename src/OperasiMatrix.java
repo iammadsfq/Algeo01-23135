@@ -132,6 +132,37 @@ public class OperasiMatrix {
         return adjoint;
     }
 
+    //Fungsi mencari determinan dengan reduksi baris
+    public static double returnDetbyRowReduction(Matrix m){
+        Matrix result = copyMatrix(m);
+        int rows = result.rows;
+        int cols = result.cols;
+        double det = 1;
+
+        for (int i = 0; i < rows; i++) {
+
+            // Jika salah satu elemn diagonal bernilai 0
+            if (result.contents[i][i] == 0) {
+                return 0;
+            }
+
+            // Eliminasi nilai dibawah elemen diagonal
+            for (int j = i + 1; j < rows; j++) {
+                double factor = result.contents[j][i] / result.contents[i][i];  // Normalize by the pivot
+                for (int k = i; k < cols; k++) {
+                    result.contents[j][k] -= factor * result.contents[i][k];
+                }
+            }
+        }
+
+        //Perkalian elemen diagonal
+        for (int i = 0; i < rows; i++) {
+            det *= result.contents[i][i];
+        }
+
+        return det;
+
+    }
     //Fungsi mengubah bentuk matriks ke dalam bentuk matriks eselon baris
     public static Matrix REF(Matrix m) {
         Matrix result = copyMatrix(m);
@@ -202,18 +233,36 @@ public class OperasiMatrix {
     public static Matrix swapTwoRows(Matrix m, int row1, int row2) {
         Matrix result = copyMatrix(m);
 
-        double[] tempRow = new double[m.cols];
-        for (int j = 0; j < result.cols; j++) {
-            tempRow[j] = result.contents[row1][j];
-        }
-        for (int j = 0; j < result.cols; j++) {
-            result.contents[row1][j] = result.contents[row2][j];
-        }
-        for (int j = 0; j < result.cols; j++) {
-            result.contents[row2][j] = tempRow[j];
-        }
+        double[] tempRow = result.contents[row1];
+        result.contents[row1] = result.contents[row2];
+        result.contents[row2] = tempRow;
 
         return result;
     }
+
+    public static Matrix returnInversByGaussJordan(Matrix m, int N) {
+        Matrix augmented = new Matrix(N, 2 * N);
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                augmented.contents[i][j] = m.contents[i][j];
+            }
+        }
+
+        for (int i = 0; i < N; i++) {
+            augmented.contents[i][i + N] = 1;
+
+        augmented = ReductionREF(augmented);
+
+        Matrix inverse = new Matrix(N, N);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                inverse.contents[i][j] = augmented.contents[i][j + N];
+            }
+        }
+
+        return inverse;
+    }
+
 
 }

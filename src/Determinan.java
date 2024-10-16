@@ -17,16 +17,16 @@ public class Determinan {
         System.out.println("Determinan dari matriks adalah: " + determinant);
     }
 
-    //    public static void calculateDetByRowReduction(Matrix matrix){
-//        if (matrix.rows != matrix.cols) {
-//            throw new IllegalArgumentException("Determinant hanya dapat dihitung untuk matriks persegi (NxN)");
-//        }
-//        double result = OperasiMatrix.returnDetByRowReduction(m);
-//        System.out.println("Determinan dari matrix");
-//        m.TulisMatrix();
-//        System.out.println("adalah " + result);
-//
-//        IO.tekanEnterUntukKembali();
-//    }
-//}
+    public static void calculateDetByRowReduction(Matrix matrix){
+        if (matrix.rows != matrix.cols) {
+            throw new IllegalArgumentException("Determinant hanya dapat dihitung untuk matriks persegi (NxN)");
+        }
+        double result = OperasiMatrix.returnDetByRowReduction(m);
+        System.out.println("Determinan dari matrix");
+        m.TulisMatrix();
+        System.out.println("adalah " + result);
+
+        IO.tekanEnterUntukKembali();
+    }
+}
 }
