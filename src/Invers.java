@@ -20,13 +20,19 @@ public class Invers {
     }
 
     // Fungsi Matriks untuk adjoint
+
+    public static void main(String[] args) {
+        Matrix matrix = Matrix.readNxNMatrixFromKeyboard();
+
+
+    }
     public static void getInversByRowReduction(Matrix matrix){
         int n = matrix.rows;
         // Memeriksa apakah matriks adalah matriks bersifat persegi
         if (matrix.rows != matrix.cols) {
             throw new IllegalArgumentException("Invers hanya dapat dihitung untuk matriks persegi (NxN)");
         }
-        double determinant = OperasiMatrix.returnDetByRowReduction(matrix);
+        double determinant = OperasiMatrix.returnDetByRowReduction(matrix, matrix.rows);
         if (determinant == 0) { // Jika determinan 0, matriks tidak memiliki invers
             throw new ArithmeticException("Matriks tidak memiliki invers karena determinan adalah 0.");
         }
@@ -39,4 +45,6 @@ public class Invers {
         inversMatrix.TulisMatrix();
 
     }
+
+
 }

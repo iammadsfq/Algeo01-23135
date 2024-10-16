@@ -133,15 +133,14 @@ public class OperasiMatrix {
     }
 
     //Fungsi mencari determinan dengan reduksi baris
-    public static double returnDetByRowReduction(Matrix m){
+    public static double returnDetByRowReduction(Matrix m, int rows){
         Matrix result = copyMatrix(m);
-        int rows = result.rows;
         int cols = result.cols;
         double det = 1;
 
         for (int i = 0; i < rows; i++) {
 
-            // Jika salah satu elemn diagonal bernilai 0
+            // Jika salah satu elemen diagonal bernilai 0
             if (result.contents[i][i] == 0) {
                 return 0;
             }
@@ -262,6 +261,54 @@ public class OperasiMatrix {
         }
 
         return inverse;
+    }
+
+    //fungsi menentukan nilai variable SPL dengan metode Gauss atau GaussJordan
+    public static String[] SolveSPLGaussJordan(Matrix m) {
+        for (int i = 0; i < m.rows; i++) {
+            boolean allZero = true;
+            for (int j = 0; j < m.cols - 1; j++) {  // Check all elements except the last column
+                if (m.contents[i][j] != 0) {
+                    allZero = false;
+                    break;
+                }
+            }
+
+            // Mengecek apakah solusi tidak unik
+            if (allZero && m.contents[i][m.cols - 1] != 0) {
+                System.out.print("Tidak ada Solusi");
+
+            }
+
+            if (allZero && m.contents[i][m.cols - 1] == 0) {
+
+            }
+        }
+
+        //Ketika solusi unik
+        double[] solution = new double[m.rows];
+
+        // Perform back substitution to find the solution
+        for (int i = m.rows - 1; i >= 0; i--) {
+            solution[i] = m.contents[i][m.cols - 1];  // Start with the constant term
+
+            for (int j = i + 1; j < m.cols - 1; j++) {
+                solution[i] -= m.contents[i][j] * solution[j];  // Subtract known values of x
+            }
+
+            solution[i] /= m.contents[i][i];  // Divide by the diagonal element
+        }
+
+        for(int i = 0; i<m.rows;i++){
+            solution[i]=  Math.round(solution[i] * 100) / (double) 100;
+        }
+        String[] solutions = new String[m.rows];
+
+        for (int i = 0; i < m.rows; i++) {
+            solutions[i] = String.valueOf(solution[i]);
+        }
+
+        return solutions;
     }
 
 

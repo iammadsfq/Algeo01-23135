@@ -38,6 +38,7 @@ public class SPL {
             throw new IllegalArgumentException("Matriks koefisien harus persegi (NxN) untuk menggunakan metode invers.");
         }
 
+
         // Invers dari matriks koefisien dihitung, lalu dikalikan dengan konstanta
         Matrix inversMatrix = OperasiMatrix.returnInversByAdjoint(matrixKoefisien);
         Matrix hasil = kalikanMatriks(inversMatrix, vektorKonstanta);
@@ -64,15 +65,24 @@ public class SPL {
         return hasil;
     }
 
-    //    public static void solveGaussianElimination(Matrix m) {
-//
-//        Matrix result = copyMatrix(m);
-//        Matrix ref = OperasiMatrix.ReductionREF(result);
-//    }
-//
-//    public static boid solveGaussianJordanElimination(Matrix m){
-//        Matrix result = copyMatrix(m);
-//        Matrix ref = OperasiMatrix.ReductionREF(result);
-//    }
-//}
-}
+    //Fungsi menyelesaikan SPL dengan Eliminasi Gauss
+    public static void solveGaussianElimination(Matrix m) {
+        Matrix result = OperasiMatrix.REF(m);
+        String[] Solutions = OperasiMatrix.SolveSPLGaussJordan(result);
+
+        IO.tulisSolusiSPL(Solutions);
+        IO.tekanEnterUntukKembali();
+
+    }
+
+    //Fungsi menyelesaikan SPL dengan Eliminasi Gauss-Jordan
+    public static void solveGaussianJordanElimination(Matrix m){
+        Matrix result = OperasiMatrix.ReductionREF(m);
+        String[] Solutions = OperasiMatrix.SolveSPLGaussJordan(result);
+
+        IO.tulisSolusiSPL(Solutions);
+        IO.tekanEnterUntukKembali();
+    }
+
+    }
+

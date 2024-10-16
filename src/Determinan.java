@@ -21,7 +21,7 @@ public class Determinan {
         if (matrix.rows != matrix.cols) {
             throw new IllegalArgumentException("Determinant hanya dapat dihitung untuk matriks persegi (NxN)");
         }
-        double result = OperasiMatrix.returnDetByRowReduction(matrix);
+        double result = OperasiMatrix.returnDetByRowReduction(matrix, matrix.rows);
         System.out.println("Determinan dari matrix");
         matrix.TulisMatrix();
         System.out.println("adalah " + result);

@@ -234,7 +234,7 @@ public class Main {
 
         // Proceed with Gaussian Elimination
         if (matrix != null) {
-            // solveGaussianElimination(matrix); //Realisasi di file SPL.java
+            SPL.solveGaussianElimination(matrix); //Realisasi di file SPL.java
             // ^Memproses matriks sampai menulis solusi
             matrix.TulisMatrix();
         } else {
@@ -284,7 +284,7 @@ public class Main {
 
         // Proceed with Gaussian Elimination
         if (matrix != null) {
-            // solveGaussianJordanElimination(matrix); // NAH BIKIN YG INI
+             SPL.solveGaussianJordanElimination(matrix);
             matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
