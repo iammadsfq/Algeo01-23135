@@ -168,6 +168,7 @@ public class Main {
                 case 5:
                     System.out.println("Anda memilih: Interpolasi Bicubic Spline");
                     delay(1000);
+                    startBicubicSpline();
                     break;
                 case 6:
                     System.out.println("Anda memilih: Regresi Linier dan Kuadratik Berganda");
@@ -617,6 +618,42 @@ public class Main {
                 switch (inputChoice) {
                     case 1:
                         InterpolasiPolinomial.bacaKeyboardInterpolasiPolinomial(); //read matrix from keyboard input
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        InterpolasiPolinomial.bacaFileInterpolasiPolinomial(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+            break;
+        }
+    }
+    public static void startBicubicSpline() {
+        System.out.println();
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        BicubicInterpolation.bacaKeyboardBicubicInterpolation(); //read matrix from keyboard input
                         break;
 
                     case 2:
