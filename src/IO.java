@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class IO {
@@ -8,12 +9,18 @@ public class IO {
     }
     public static void tulisSolusiSPL(String[] solutions) //Untuk Penyelesaian SPL
     {
-        System.out.print("x" + 1 + " = " + solutions[0]);
-        for (int i = 1; i < solutions.length; i++) {
-            if (solutions[i] != null) {
-                System.out.print(", x" + (i+1) + " = " + solutions[i]);
+        if (Objects.equals(solutions[0], "Tidak ada solusi")) {
+            System.out.print("Tidak ada solusi");
+        }
+        else {
+            System.out.print("x" + 1 + " = " + solutions[0]);
+            for (int i = 1; i < solutions.length; i++) {
+                if (solutions[i] != null) {
+                    System.out.print(", x" + (i+1) + " = " + solutions[i]);
+                }
             }
         }
+
     }
 
 
