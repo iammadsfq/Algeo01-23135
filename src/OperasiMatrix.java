@@ -265,51 +265,59 @@ public class OperasiMatrix {
 
     //fungsi menentukan nilai variable SPL dengan metode Gauss atau GaussJordan
     public static String[] SolveSPLGaussJordan(Matrix m) {
-        for (int i = 0; i < m.rows; i++) {
+        int i, j;
+        for (i = 0; i < m.rows; i++) {
             boolean allZero = true;
-            for (int j = 0; j < m.cols - 1; j++) {  // Check all elements except the last column
+            for (j = 0; j < m.cols - 1; j++) {
                 if (m.contents[i][j] != 0) {
                     allZero = false;
                     break;
                 }
             }
-
-            // Mengecek apakah solusi tidak unik
             if (allZero && m.contents[i][m.cols - 1] != 0) {
-                System.out.print("Tidak ada Solusi");
-
-            }
-
-            if (allZero && m.contents[i][m.cols - 1] == 0) {
-
+                return new String[]{"Tidak ada solusi"};
             }
         }
 
-        //Ketika solusi unik
-        double[] solution = new double[m.rows];
-
-        // Perform back substitution to find the solution
-        for (int i = m.rows - 1; i >= 0; i--) {
-            solution[i] = m.contents[i][m.cols - 1];  // Start with the constant term
-
-            for (int j = i + 1; j < m.cols - 1; j++) {
-                solution[i] -= m.contents[i][j] * solution[j];  // Subtract known values of x
+        SolusiBanyak[] solution = new SolusiBanyak[m.cols - 1];
+        for (i = m.rows - 1; i >= 0; i--) {
+            int leadIndex = -1;
+            for (j = 0; j < m.cols - 1; j++) {
+                if (m.contents[i][j] != 0) {
+                    leadIndex = j;
+                    break;
+                }
             }
 
-            solution[i] /= m.contents[i][i];  // Divide by the diagonal element
+            if (leadIndex != -1) {
+                if (solution[leadIndex] == null) {
+                    solution[leadIndex] = new SolusiBanyak();
+                    solution[leadIndex].list_koef[0] = m.contents[i][m.cols - 1];
+                } else {
+                    solution[leadIndex].list_koef[0] -= m.contents[i][m.cols - 1];
+                }
+                for (j = leadIndex + 1; j < m.cols - 1; j++) {
+                    if (solution[j] != null) {
+                        solution[leadIndex] = SolusiBanyak.subtractSolusiBanyak(solution[leadIndex],
+                                SolusiBanyak.sbKaliKonstanta(solution[j], m.contents[i][j]));
+                    }
+                }
+                solution[leadIndex] = SolusiBanyak.sbKaliKonstanta(solution[leadIndex], 1 / m.contents[i][leadIndex]);
+            }
         }
 
-        for(int i = 0; i<m.rows;i++){
-            solution[i]=  Math.round(solution[i] * 100) / (double) 100;
-        }
-        String[] solutions = new String[m.rows];
-
-        for (int i = 0; i < m.rows; i++) {
-            solutions[i] = String.valueOf(solution[i]);
+        String[] solutions = new String[m.cols - 1];
+        for (i = 0; i < m.cols - 1; i++) {
+            if (solution[i] != null) {
+                solutions[i] = SolusiBanyak.MergeSolusiBanyak(solution[i]);
+            } else {
+                solutions[i] = "Free variable";
+            }
         }
 
         return solutions;
     }
+
 
 
 }
