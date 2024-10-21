@@ -265,6 +265,7 @@ public class OperasiMatrix {
 
     //fungsi menentukan nilai variable SPL dengan metode Gauss atau GaussJordan
     public static String[] SolveSPLGaussJordan(Matrix m) {
+        m.TulisMatrix();
         int i, j;
         for (i = 0; i < m.rows; i++) {
             boolean allZero = true;
@@ -280,6 +281,31 @@ public class OperasiMatrix {
         }
 
         SolusiBanyak[] solution = new SolusiBanyak[m.cols - 1];
+        int k = 44;
+
+        //assign parameters to free variables
+        for (j = m.cols - 2; j >= 0; j--) {
+            boolean hasLead = false;
+            for (i = 0; i < m.rows; i++) {
+                if (m.contents[i][j] != 0) {
+                    hasLead = true;
+                    for (int p = j-1; p >= 0; p--) {
+                        if (m.contents[i][p] != 0) {
+                            hasLead = false;
+                            break;
+                        }
+                    }
+                    if (hasLead) {
+                        break;
+                    }
+                }
+            }
+            if (!hasLead) {
+                solution[j] = new SolusiBanyak();
+                solution[j].list_koef[k] = 1;
+                k = SolusiBanyak.nextIndexSB(k);
+            }
+        }
         for (i = m.rows - 1; i >= 0; i--) {
             int leadIndex = -1;
             for (j = 0; j < m.cols - 1; j++) {
@@ -288,13 +314,10 @@ public class OperasiMatrix {
                     break;
                 }
             }
-
             if (leadIndex != -1) {
                 if (solution[leadIndex] == null) {
                     solution[leadIndex] = new SolusiBanyak();
                     solution[leadIndex].list_koef[0] = m.contents[i][m.cols - 1];
-                } else {
-                    solution[leadIndex].list_koef[0] -= m.contents[i][m.cols - 1];
                 }
                 for (j = leadIndex + 1; j < m.cols - 1; j++) {
                     if (solution[j] != null) {
@@ -308,14 +331,34 @@ public class OperasiMatrix {
 
         String[] solutions = new String[m.cols - 1];
         for (i = 0; i < m.cols - 1; i++) {
-            if (solution[i] != null) {
-                solutions[i] = SolusiBanyak.MergeSolusiBanyak(solution[i]);
-            } else {
-                solutions[i] = "Free variable";
-            }
+            solutions[i] = SolusiBanyak.MergeSolusiBanyak(solution[i]);
         }
 
         return solutions;
+    }
+
+    public static Matrix transpose(Matrix matrix) {
+        int rows = matrix.rows;
+        int cols = matrix.cols;
+        Matrix transposed = new Matrix(matrix.cols,matrix.rows);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                transposed.contents[j][i] = matrix.contents[i][j];
+            }
+        }
+        return transposed;
+    }
+
+    public static Matrix toAugmented(Matrix XTX, Matrix vektor) {
+        Matrix augmented = new Matrix(XTX.rows, XTX.cols + 1);
+        int i, j;
+        for (i = 0; i < XTX.rows; i++) {
+            for (j = 0; j < XTX.cols; j++) {
+                augmented.contents[i][j] = XTX.contents[i][j];
+            }
+            augmented.contents[i][XTX.cols] = vektor.contents[i][0];
+        }
+        return augmented;
     }
 
 
