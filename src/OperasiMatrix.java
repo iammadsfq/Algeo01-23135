@@ -162,40 +162,37 @@ public class OperasiMatrix {
         return det;
 
     }
-    //Fungsi mengubah bentuk matriks ke dalam bentuk matriks eselon baris
+
     public static Matrix REF(Matrix m) {
         Matrix result = copyMatrix(m);
         int rows = result.rows;
         int cols = result.cols;
+        double eps = 1e-9;
 
-        // Menentukan pivot sebagai elemen selain nol dari kolom ujung kiri
         for (int i = 0; i < rows; i++) {
             int maxRow = i;
+
             for (int k = i + 1; k < rows; k++) {
                 if (Math.abs(result.contents[k][i]) > Math.abs(result.contents[maxRow][i])) {
                     maxRow = k;
                 }
             }
 
-            // Menukar apabila ditemukan pivot dibawah current baris
-            if (maxRow != i) {
+            if (Math.abs(result.contents[maxRow][i]) > eps) {
                 result = swapTwoRows(result, i, maxRow);
-            }
-
-            //jika pivot tidak ada selain nol
-            if (result.contents[i][i] == 0) {
+            } else {
                 continue;
             }
 
-            //Membagi baris dengan pivot
             double pivot = result.contents[i][i];
-            for (int j = i; j < cols; j++) {
-                result.contents[i][j] /= pivot;
+            if (Math.abs(pivot) > eps) {
+                for (int j = i; j < cols; j++) {
+                    result.contents[i][j] /= pivot;
+                }
             }
 
-            // mengubah elemen dibawah pivot menjadi nol
             for (int j = i + 1; j < rows; j++) {
-                if (result.contents[j][i] != 0) {
+                if (Math.abs(result.contents[j][i]) > eps) {
                     double factor = result.contents[j][i];
                     for (int k = i; k < cols; k++) {
                         result.contents[j][k] -= factor * result.contents[i][k];
@@ -204,8 +201,16 @@ public class OperasiMatrix {
             }
         }
 
+        for (int i = 0; i < rows; i++){
+            for (int j =0; j < cols; j++){
+                if (Math.abs(result.contents[i][j]) < eps){
+                    result.contents[i][j] = 0;
+                }
+            }
+        }
         return result;
     }
+
 
     public static Matrix ReductionREF(Matrix m){
         Matrix result = copyMatrix(m);
