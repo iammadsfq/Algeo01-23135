@@ -12,7 +12,8 @@ public class RegresiBerganda {
         int m = sc.nextInt();
 
         // Memanggil metode untuk menghitung regresi kuadratik berganda
-        regresiKuadratikBerganda(n, m, sc);
+        // regresiLinierBerganda(n,m,sc);
+        // regresiKuadratikBerganda(n,m,sc);
     }
 
     public static void regresiKuadratikBerganda(int n, int m, Scanner sc) {
@@ -75,4 +76,37 @@ public class RegresiBerganda {
         // Menggunakan metode eliminasi SPL Gauss dan mengembalikan solusi berupa nilai koefisien regresi
         return OperasiMatrix.SolveSPLGaussJordan(OperasiMatrix.ReductionREF(augmentedMatrix));
     }
+
+    public static void regresiLinierBerganda(int n, int m, Scanner sc) {
+        // Menghitung total jumlah kolom dalam proses regresi linier berganda
+        int totalColumns = 1 + n;
+
+        Matrix X = new Matrix(m, totalColumns);  // Matriks X
+        Matrix y = new Matrix(m, 1);             // Vektor y
+
+        // Membaca nilai-nilai bagi setiap sampel
+        for (int i = 0; i < m; i++) {
+            X.contents[i][0] = 1; // Intercept
+            System.out.println("Masukkan nilai untuk sampel ke-" + (i + 1) + ":");
+            for (int j = 0; j < n; j++) {
+                System.out.print("x" + (i + 1) + (j + 1) + ": ");
+                X.contents[i][j + 1] = sc.nextDouble(); // Memasukkan nilai variabel bebas linier ke matriks X
+            }
+
+            System.out.print("y" + (i + 1) + ": ");
+            y.contents[i][0] = sc.nextDouble();  // Membaca nilai variabel y untuk setiap sampel
+        }
+
+        // Fungsi untuk menyelesaikan regresi linier
+        String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
+
+        // Menampilkan hasil nilai koefisien regresi
+        for (int i = 0; i < solusi.length; i++) {
+            System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
+        }
+    }
+
+
+
+
 }
