@@ -83,18 +83,23 @@ public class Matrix {
                 String line = sc.nextLine();
                 String[] values = line.trim().split("\\s+"); // Split by whitespace
 
-                // Convert the string values to doubles
-                double[] row = new double[values.length];
-                for (int i = 0; i < values.length; i++) {
-                    row[i] = Double.parseDouble(values[i]);
-                }
-
-                // Check if the number of columns is consistent
+                // Validate number of columns consistency
                 if (cols == -1) {
                     cols = values.length; // Set the number of columns for the first row
                 } else if (cols != values.length) {
-                    throw new IllegalArgumentException("Jumlah Kolom Tidak Konsisten!");
+                    throw new IllegalArgumentException("Jumlah Kolom Tidak Konsisten pada baris: " + line);
                 }
+
+                // Convert the string values to doubles
+                double[] row = new double[values.length];
+                for (int i = 0; i < values.length; i++) {
+                    try {
+                        row[i] = Double.parseDouble(values[i]);
+                    } catch (NumberFormatException e) {
+                        throw new NumberFormatException("Kesalahan format angka pada baris: " + line);
+                    }
+                }
+
                 // Add the row to the temp matrix list
                 tempMatrix.add(row);
             }
@@ -114,11 +119,12 @@ public class Matrix {
             sc.close();  // Close the scanner after reading
         } catch (FileNotFoundException e) {
             System.out.println("Error: File '" + fileName + "' tidak ditemukan.");
-        } catch (NumberFormatException e) {
-            System.out.println("Error: Terdapat kesalahan format angka dalam konten file.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-
-        return matrix;  // Return the populated matrix
+        System.out.println(matrix.rows);
+        System.out.println(matrix.cols);
+        return matrix;  // Return the populated matrix or null if an error occurred
     }
     public static Matrix readNxNMatrixFromKeyboard() {
         Scanner sc = new Scanner(System.in);
@@ -168,7 +174,8 @@ public class Matrix {
                 if (n == -1) {
                     n = values.length; // Set N from the first row's length
                 } else if (n != values.length) {
-                    throw new IllegalArgumentException("Matrix bukan NxN. Kolom tidak konsisten!");
+                    System.out.println("Error: Matrix bukan NxN. Kolom tidak konsisten!");
+                    return null;  // Return to the main program without an exception
                 }
 
                 // Add the row to the temp matrix list
@@ -177,7 +184,8 @@ public class Matrix {
 
             // Validate if the matrix is square
             if (tempMatrix.size() != n) {
-                throw new IllegalArgumentException("Matrix bukan NxN. Baris tidak konsisten!");
+                System.out.println("Error: Matrix bukan NxN. Baris tidak konsisten!");
+                return null;  // Return to the main program without an exception
             }
 
             // Create the NxN matrix
@@ -196,11 +204,9 @@ public class Matrix {
             System.out.println("Error: File '" + fileName + "' tidak ditemukan.");
         } catch (NumberFormatException e) {
             System.out.println("Error: Terdapat kesalahan format angka dalam konten file.");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
         }
 
-        return matrix;  // Return the populated matrix
+        return matrix;  // Return the populated matrix or null in case of an error
     }
 
 
