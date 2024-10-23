@@ -39,7 +39,7 @@ public class InterpolasiPolinomial {
     }
     public static void bacaFileInterpolasiPolinomial(String fileName) {
         try {
-            File file = new File(fileName);
+            File file = new File("test/" + fileName);
             Scanner sc = new Scanner(file);
 
             int n = 0;
@@ -83,11 +83,23 @@ public class InterpolasiPolinomial {
         Matrix a = SPL.kalikanMatriks(V_inv, vektorY);
 
         double hasilInterpolasi = 0;
-        for (int i = 0; i < a.rows; i++) {
+        System.out.print("f(x) = ");
+        hasilInterpolasi += a.contents[0][0]* Math.pow(xTarget, 0);
+        System.out.print(Math.round(a.contents[0][0]*10000)/10000);
+        for (int i = 1; i < a.rows; i++) {
+            if (a.contents[i][0] != 0) {
+                if (a.contents[i][0] > 0) {
+                    System.out.print("+");
+                }
+                System.out.print(Math.round(a.contents[i][0]*10000)/10000);
+                System.out.print("x^");
+                System.out.print(i);
+            }
             hasilInterpolasi += a.contents[i][0]* Math.pow(xTarget, i);
         }
 
         // Output hasil interpolasi
+        System.out.println();
         System.out.println("Hasil interpolasi untuk x = " + xTarget + " adalah: " + hasilInterpolasi);
     }
     public static Matrix createVandermondeMatrix(double[] x, int n) {
