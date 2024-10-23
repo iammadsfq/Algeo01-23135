@@ -1,0 +1,2 @@
+Hasil Perhitungan Bicubic Interpolation
+f(0.25, 0.75) = 117.732177734375

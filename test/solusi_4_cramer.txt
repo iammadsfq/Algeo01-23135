@@ -1,0 +1,6 @@
+Matriks:
+1300.0 60.0 -40.0 -80.0 0.0
+0.0 40.0 -60.0 -20.0 0.0
+200.0 80.0 20.0 -150.0 0.0
+
+Matriks memerlukan 4 persamaan untuk dapat diselesaikan.
