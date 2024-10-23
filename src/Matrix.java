@@ -71,7 +71,7 @@ public class Matrix {
 
         try {
             // Create a File object to open the file
-            File file = new File(fileName);
+            File file = new File("test/" + fileName);
             Scanner sc = new Scanner(file);
 
             // Temporary list to store rows of matrix values
@@ -122,8 +122,6 @@ public class Matrix {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println(matrix.rows);
-        System.out.println(matrix.cols);
         return matrix;  // Return the populated matrix or null if an error occurred
     }
     public static Matrix readNxNMatrixFromKeyboard() {
@@ -152,7 +150,7 @@ public class Matrix {
 
         try {
             // Create a File object to open the file
-            File file = new File(fileName);
+            File file = new File("test/" + fileName);
             Scanner sc = new Scanner(file);
 
             // Temporary list to store rows of matrix values
