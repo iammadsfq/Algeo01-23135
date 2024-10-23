@@ -63,7 +63,6 @@ public class BicubicInterpolation {
                 vektor_y.contents[4*i+j][0] = input.contents[i][j];
             }
         }
-        vektor_y.TulisMatrix();
         //vektor_y END
 
         //vektor_a = 00, 10, 20, 30, 01, 11, 21, 31, 02, 12, 22, 32, 03, 13 23 33
@@ -107,25 +106,19 @@ public class BicubicInterpolation {
                 matrix_x.contents[i][j] = ekspansiSigmaTurunanSilang(value_x,value_y,power_x,power_y);
             }
         } //turunan silang di (x,y)
-        matrix_x.TulisMatrix();
-        System.out.println("\n");
         //matrix_x END
 
         //bikin invers_x
         Matrix invers_x = OperasiMatrix.returnInversByGaussJordan(matrix_x, 16);
-        invers_x.TulisMatrix();
-        System.out.println("\n");
         //vektor_a = kalikanMatrix(invers_x,vektor_y)
         Matrix vektor_a = SPL.kalikanMatriks(invers_x, vektor_y);
-        vektor_a.TulisMatrix();
-        System.out.println("\n");
         double result = returnBicubicInterpolation(vektor_a, a, b);
         //result = returnBicubicInterpolation(vektor_a, a, b)
         System.out.println(result);
         Main.delay(1000);
         IO.tekanEnterUntukKembali();
     }
-    public static void bacaFileBicubicInterpolation() {
+    public static void bacaFileBicubicInterpolation(String fileName) {
 
     }
     public static double returnBicubicInterpolation(Matrix vektor_a, double x, double y) {

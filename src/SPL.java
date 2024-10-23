@@ -4,7 +4,10 @@ public class SPL {
         Matrix vektor_b = OperasiMatrix.getVektorKonstanta(m);
         //asumsi matrix persegi
         double determinan_a = OperasiMatrix.returnDetByRowReduction(matrix_a, matrix_a.rows);
-
+        if (determinan_a == 0) {
+            System.out.println("Determinan matriks adalah 0.");
+            return;
+        }
         //bikin array solusi
         String[] solutions = new String[m.cols];
         //iterasi, masukin hasil ke solutions
@@ -24,7 +27,6 @@ public class SPL {
         Matrix vektor_B = OperasiMatrix.getVektorKonstanta(matrix);
         Matrix hasil = SPLByInverseMatrix(matrix_A, vektor_B);
         if (hasil == null) {
-            System.out.println("Matrix tidak memiliki invers");
             return;
         }
         String[] solutions = new String[hasil.rows];
@@ -40,11 +42,15 @@ public class SPL {
         if (matrixKoefisien.rows != matrixKoefisien.cols) {
             return null;
         }
-
         // Invers dari matriks koefisien dihitung, lalu dikalikan dengan konstanta
         Matrix inversMatrix = OperasiMatrix.returnInversByAdjoint(matrixKoefisien);
+        if (inversMatrix == null) {
+            return null;
+        }
         Matrix hasil = kalikanMatriks(inversMatrix, vektorKonstanta);
-
+        if (hasil == null) {
+            return null;
+        }
         return hasil;
     }
 
