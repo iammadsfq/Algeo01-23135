@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -171,9 +172,44 @@ public class Main {
                     startBicubicSpline();
                     break;
                 case 6:
-                    System.out.println("Anda memilih: Regresi Linier dan Kuadratik Berganda");
+                    System.out.println("Anda memilih: Regresi Berganda");
                     delay(1000);
-                    break;
+                    System.out.println("PILIH REGRESI");
+                    System.out.println("1. Regresi Linear Berganda");
+                    System.out.println("2. Regresi Kuadratik Berganda");
+                    System.out.println("3. Kembali");
+                    System.out.print("Pilih menu (1-3): ");
+                { //supaya gak bentrok dgn case lain, ini di kurung kurawal
+                    int methodChoice;
+
+                    try {
+                        methodChoice = scanner.nextInt();  // Input pilihan metode SPL
+                    } catch (java.util.InputMismatchException er) {
+                        System.out.println("Input tidak valid! Silakan masukkan angka.");
+                        delay(1000);
+                        scanner.next(); // Clear the invalid input
+                        continue; // Skip to the next iteration of the loop
+                    }
+
+                    while (methodChoice < 1 || methodChoice > 3) {
+                        System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+                        System.out.print("Pilih menu (1-3): ");
+                        methodChoice = scanner.nextInt();
+                    }
+
+                    switch (methodChoice) {
+                        case 1:
+                            startLinearRegression();
+                            break;
+                        case 2:
+                            startQuadraticRegression();
+                            break;
+                        case 3:
+                            System.out.println("Kembali ke menu utama.");
+                            break;
+                    }
+                }
+                break;
                 case 7:
                     System.out.println("Keluar dari program.");
                     delay(1000);
@@ -683,6 +719,8 @@ public class Main {
             break;
         }
     }
+
+    //Bicubic Spline
     public static void startBicubicSpline() {
         System.out.println();
         // minta pilih metode input
@@ -719,6 +757,93 @@ public class Main {
             break;
         }
     }
+
+    //Regresi Berganda
+    public static void startLinearRegression() {
+        System.out.println();
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        // Proses input jumlah peubah (n) dan sampel (m)
+                        System.out.print("Masukkan jumlah peubah (n): ");
+                        int n = sc.nextInt();
+                        System.out.print("Masukkan jumlah sampel (m): ");
+                        int m = sc.nextInt();
+                        RegresiBerganda.regresiLinierBerganda(n, m, sc);
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        RegresiBerganda.bacaFileRegresiLinierBerganda(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            }
+            break;
+        }
+    }
+    public static void startQuadraticRegression() {
+        System.out.println();
+        // minta pilih metode input
+        System.out.println("PILIH METODE INPUT");
+        System.out.println("1. Keyboard Input");
+        System.out.println("2. File Input");
+        Scanner sc = new Scanner(System.in);
+        int inputChoice = -1;
+
+        while (true) {
+            try {
+                System.out.print("Masukkan pilihan Anda (1-2): ");
+                inputChoice = sc.nextInt();
+
+                switch (inputChoice) {
+                    case 1:
+                        // Proses input jumlah peubah (n) dan sampel (m)
+                        System.out.print("Masukkan jumlah peubah (n): ");
+                        int n = sc.nextInt();
+                        System.out.print("Masukkan jumlah sampel (m): ");
+                        int m = sc.nextInt();
+                        RegresiBerganda.regresiKuadratikBerganda(n, m, sc);
+                        break;
+
+                    case 2:
+                        System.out.print("Masukkan nama file (contoh: matrix.txt): ");
+                        String fileName = sc.next();  // Capture file name input
+                        RegresiBerganda.bacaFileRegresiKuadratikBerganda(fileName);
+                        break;
+
+                    default:
+                        System.out.println("Pilihan tidak valid. Harap masukkan 1 atau 2.");
+                        continue; // Input lagi
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
+                sc.next();  // Clear the invalid input from the scanner buffer
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            break;
+        }
+    }
+
     public static void delay(int ms) {
         try {
             Thread.sleep(ms); // Pause for specified milliseconds
