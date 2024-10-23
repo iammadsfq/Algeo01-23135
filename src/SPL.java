@@ -3,7 +3,7 @@ public class SPL {
         Matrix matrix_a = OperasiMatrix.getMatrixKoefisien(m);
         Matrix vektor_b = OperasiMatrix.getVektorKonstanta(m);
         //asumsi matrix persegi
-        double determinan_a = OperasiMatrix.returnDetBySarrus(matrix_a);
+        double determinan_a = OperasiMatrix.returnDetByRowReduction(matrix_a, matrix_a.rows);
 
         //bikin array solusi
         String[] solutions = new String[m.cols];
@@ -12,7 +12,7 @@ public class SPL {
         Matrix matrix_i;
         for (i = 0; i < matrix_a.cols; i++) {
             matrix_i = OperasiMatrix.replaceColWithVector(matrix_a, vektor_b, i);
-            double determinan_i = OperasiMatrix.returnDetBySarrus(matrix_i);
+            double determinan_i = OperasiMatrix.returnDetByRowReduction(matrix_i, matrix_i.rows);
             solutions[i] = String.valueOf(determinan_i/determinan_a);
         }
         IO.tulisSolusiSPL(solutions);
@@ -23,6 +23,10 @@ public class SPL {
         Matrix matrix_A = OperasiMatrix.getMatrixKoefisien(matrix);
         Matrix vektor_B = OperasiMatrix.getVektorKonstanta(matrix);
         Matrix hasil = SPLByInverseMatrix(matrix_A, vektor_B);
+        if (hasil == null) {
+            System.out.println("Matrix tidak memiliki invers");
+            return;
+        }
         String[] solutions = new String[hasil.rows];
         //Iterasi untuk hasil solution
         for (int i = 0; i < hasil.rows; i++) {
@@ -33,11 +37,9 @@ public class SPL {
     }
 
     public static Matrix SPLByInverseMatrix(Matrix matrixKoefisien, Matrix vektorKonstanta) {
-        // Periksa apakah matriks koefisien bersifat persegi
         if (matrixKoefisien.rows != matrixKoefisien.cols) {
-            throw new IllegalArgumentException("Matriks koefisien harus persegi (NxN) untuk menggunakan metode invers.");
+            return null;
         }
-
 
         // Invers dari matriks koefisien dihitung, lalu dikalikan dengan konstanta
         Matrix inversMatrix = OperasiMatrix.returnInversByAdjoint(matrixKoefisien);

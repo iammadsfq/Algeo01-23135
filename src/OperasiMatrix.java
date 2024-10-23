@@ -103,10 +103,11 @@ public class OperasiMatrix {
         int n = matrix.rows;
         Matrix adjoint = resultAdjoint(matrix);
         double determinant = OperasiMatrix.cofactorExpansion(matrix, matrix.rows);
+        if (determinant == 0) {
+            return null;
+        }
 
         Matrix invers = new Matrix(n, n);
-
-        // Adjoin dibagi dengan determinan untuk mendapat nilai invers
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 invers.contents[i][j] = adjoint.contents[i][j] / determinant;

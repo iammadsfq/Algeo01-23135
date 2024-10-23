@@ -494,7 +494,7 @@ public class Main {
         }
     }
     public static void determinantByRowReduction() {
-        System.out.println("Memilih Metode Ekspansi Kofaktor.\n");
+        System.out.println("Memilih Metode Reduksi Baris.\n");
         delay(1000);
         // minta pilih metode input
         System.out.println("PILIH METODE INPUT");
@@ -541,7 +541,7 @@ public class Main {
         }
     }
     public static void determinantBySarrus() {
-        System.out.println("Memilih Metode Ekspansi Kofaktor.\n");
+        System.out.println("Memilih Metode Sarrus.\n");
         delay(1000);
         // minta pilih metode input
         System.out.println("PILIH METODE INPUT");
