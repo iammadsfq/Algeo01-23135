@@ -167,20 +167,21 @@ public class OperasiMatrix {
         Matrix result = copyMatrix(m);
         int rows = result.rows;
         int cols = result.cols;
-        double eps = 1e-9;
+        double eps = 1e-6;
 
-        for (int i = 0; i < rows; i++) {
-            int maxRow = i;
-
-            for (int k = i + 1; k < rows; k++) {
-                if (Math.abs(result.contents[k][i]) > Math.abs(result.contents[maxRow][i])) {
-                    maxRow = k;
+        for (int i = 0; i < Math.min(rows, cols); i++) {
+            if (Math.abs(result.contents[i][i]) < eps) {
+                // Mencari baris di bawah yang memiliki nilai non-nol di kolom yang sama
+                for (int k = i + 1; k < rows; k++) {
+                    if (Math.abs(result.contents[k][i]) > eps) {
+                        result = swapTwoRows(result, i, k);
+                        break; // Keluar dari loop setelah pertukaran
+                    }
                 }
             }
 
-            if (Math.abs(result.contents[maxRow][i]) > eps) {
-                result = swapTwoRows(result, i, maxRow);
-            } else {
+            // Jika setelah pencarian, elemen pivot masih nol, lanjutkan ke iterasi berikutnya
+            if (Math.abs(result.contents[i][i]) < eps) {
                 continue;
             }
 
