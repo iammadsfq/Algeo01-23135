@@ -786,7 +786,7 @@ public class Main {
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
-                        RegresiBerganda.bacaFileRegresiLinierBerganda(fileName);
+                        RegresiBerganda.bacaFileRegresiLinear(fileName);
                         break;
 
                     default:
@@ -796,6 +796,8 @@ public class Main {
             } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
                 sc.next();  // Clear the invalid input from the scanner buffer
+            } catch (FileNotFoundException e) {
+                System.out.println("File tidak ditemukan");
             }
             break;
         }

@@ -18,7 +18,6 @@ public class RegresiBerganda {
         // regresiLinierBerganda(n,m,sc);
         // regresiKuadratikBerganda(n,m,sc);
     }
-
     public static void regresiKuadratikBerganda(int n, int m, Scanner sc) {
         // Menghitung total jumlah kolom dalam proses regresi kuadratik berganda
         int totalColumns = 1 + n + n + (n * (n - 1)) / 2;
@@ -173,8 +172,53 @@ public class RegresiBerganda {
         }
     }
 
-    public static void bacaFileRegresiLinierBerganda(String filename) {
+    public static void bacaFileRegresiLinear(String fileName) throws FileNotFoundException {
+        // Membuka file dan menyiapkan scanner
+        File file = new File("test/" + fileName);
+        Scanner fileScanner = new Scanner(file);
 
+        // Menggunakan ArrayList untuk menampung sementara data dari file
+        ArrayList<double[]> dataList = new ArrayList<>();
+
+        // Membaca semua data dari file
+        while (fileScanner.hasNextLine()) {
+            String[] lineData = fileScanner.nextLine().split(" ");
+            double[] rowData = new double[lineData.length];
+            for (int i = 0; i < lineData.length; i++) {
+                rowData[i] = Double.parseDouble(lineData[i]);
+            }
+            dataList.add(rowData);
+        }
+        fileScanner.close();
+
+        // Menghitung m dan n
+        int m = dataList.size(); // Jumlah baris (sampel)
+        int n = dataList.get(0).length - 1; // Jumlah variabel bebas (tanpa y)
+
+        // Menghitung total kolom yang dibutuhkan untuk regresi linier berganda
+        int totalColumns = 1 + n; // 1 untuk intercept dan n untuk variabel bebas
+
+        // Membuat matriks X dan vektor y
+        Matrix X = new Matrix(m, totalColumns);  // Matriks X
+        Matrix y = new Matrix(m, 1);             // Vektor y
+
+        // Memasukkan nilai ke dalam matriks X dan y
+        for (int i = 0; i < m; i++) {
+            X.contents[i][0] = 1; // Intercept
+            for (int j = 0; j < n; j++) {
+                X.contents[i][j + 1] = dataList.get(i)[j]; // Nilai variabel bebas
+            }
+            // Menyimpan nilai y (variabel respon)
+            y.contents[i][0] = dataList.get(i)[n];
+        }
+
+        // Fungsi untuk menyelesaikan regresi linier
+        String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
+
+        // Menampilkan hasil nilai koefisien regresi
+        for (int i = 0; i < solusi.length; i++) {
+            System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
+        }
     }
 
 
