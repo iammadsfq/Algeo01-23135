@@ -214,6 +214,7 @@ public class OperasiMatrix {
     }
 
 
+
     public static Matrix ReductionREF(Matrix m){
         Matrix result = copyMatrix(m);
         Matrix ref = REF(result); //Memanggil REF untuk melanjutkan Matriks eselon baris tereduksi
@@ -237,13 +238,10 @@ public class OperasiMatrix {
 
     // Menukar dua baris
     public static Matrix swapTwoRows(Matrix m, int row1, int row2) {
-        Matrix result = copyMatrix(m);
-
-        double[] tempRow = result.contents[row1];
-        result.contents[row1] = result.contents[row2];
-        result.contents[row2] = tempRow;
-
-        return result;
+        double[] tempRow = m.contents[row1];
+        m.contents[row1] = m.contents[row2];
+        m.contents[row2] = tempRow;
+        return m;
     }
 
     public static Matrix returnInversByGaussJordan(Matrix m, int N) {
