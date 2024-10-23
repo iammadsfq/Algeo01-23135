@@ -63,68 +63,73 @@ public class RegresiBerganda {
             System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
         }
     }
-    public static void bacaFileRegresiKuadratikBerganda(String fileName) throws FileNotFoundException {
-        File file = new File("test/" + fileName);
-        Scanner fileScanner = new Scanner(file);
+    public static void bacaFileRegresiKuadratikBerganda(String fileName) {
+        try {
+            File file = new File("test/" + fileName);
+            Scanner fileScanner = new Scanner(file);
 
-        // Menggunakan ArrayList untuk menampung sementara data dari file
-        ArrayList<double[]> dataList = new ArrayList<>();
+            // Use ArrayList to temporarily hold data from the file
+            ArrayList<double[]> dataList = new ArrayList<>();
 
-        // Membaca semua data dari file
-        while (fileScanner.hasNextLine()) {
-            String[] lineData = fileScanner.nextLine().split(" ");
-            double[] rowData = new double[lineData.length];
-            for (int i = 0; i < lineData.length; i++) {
-                rowData[i] = Double.parseDouble(lineData[i]);
+            // Read all data from the file
+            while (fileScanner.hasNextLine()) {
+                String[] lineData = fileScanner.nextLine().split(" ");
+                double[] rowData = new double[lineData.length];
+                for (int i = 0; i < lineData.length; i++) {
+                    rowData[i] = Double.parseDouble(lineData[i]); // Convert each element to double
+                }
+                dataList.add(rowData); // Add row data to the list
             }
-            dataList.add(rowData);
-        }
-        fileScanner.close();
+            fileScanner.close();
 
-        // Menghitung n dan m
-        int m = dataList.size(); // jumlah baris (sampel)
-        int n = dataList.get(0).length - 1; // jumlah variabel bebas (tanpa y)
+            // Calculate n and m
+            int m = dataList.size(); // number of rows (samples)
+            int n = dataList.get(0).length - 1; // number of independent variables (excluding y)
 
-        // Menghitung total kolom yang dibutuhkan untuk regresi kuadratik berganda
-        int totalColumns = 1 + n + n + (n * (n - 1)) / 2;
+            // Calculate total columns needed for multiple quadratic regression
+            int totalColumns = 1 + n + n + (n * (n - 1)) / 2;
 
-        Matrix X = new Matrix(m, totalColumns);  // Matriks X
-        Matrix y = new Matrix(m, 1);             // Vektor y
+            // Initialize the X matrix (design matrix) and y vector (response variable)
+            Matrix X = new Matrix(m, totalColumns);  // Matrix X for input variables
+            Matrix y = new Matrix(m, 1);             // Vector y for the dependent variable
 
-        // Memasukkan nilai ke dalam matriks X dan y
-        for (int i = 0; i < m; i++) {
-            X.contents[i][0] = 1; // Intercept
-            double[] xi = new double[n];
-            for (int j = 0; j < n; j++) {
-                xi[j] = dataList.get(i)[j];
-                X.contents[i][j + 1] = xi[j]; // Nilai variabel bebas linier
-            }
+            // Insert values into matrices X and y
+            for (int i = 0; i < m; i++) {
+                X.contents[i][0] = 1; // Intercept term (constant 1)
+                double[] xi = new double[n];
+                for (int j = 0; j < n; j++) {
+                    xi[j] = dataList.get(i)[j];      // Get the independent variable values
+                    X.contents[i][j + 1] = xi[j];    // Insert linear term values into X
+                }
 
-            // Menambahkan variabel kuadrat dari setiap variabel
-            int index = n + 1;
-            for (int j = 0; j < n; j++) {
-                X.contents[i][index] = xi[j] * xi[j]; // Kuadrat variabel
-                index++;
-            }
-
-            // Menambahkan interaksi antar variabel
-            for (int j = 0; j < n - 1; j++) {
-                for (int k = j + 1; k < n; k++) {
-                    X.contents[i][index] = xi[j] * xi[k]; // Interaksi variabel
+                // Add the squared terms for each variable
+                int index = n + 1;
+                for (int j = 0; j < n; j++) {
+                    X.contents[i][index] = xi[j] * xi[j]; // Square each variable
                     index++;
                 }
+
+                // Add interaction terms between variables
+                for (int j = 0; j < n - 1; j++) {
+                    for (int k = j + 1; k < n; k++) {
+                        X.contents[i][index] = xi[j] * xi[k]; // Product of xi and xk (interaction term)
+                        index++;
+                    }
+                }
+
+                // Store the dependent variable (y) value
+                y.contents[i][0] = dataList.get(i)[n];
             }
 
-            // Menyimpan nilai y (variabel respon)
-            y.contents[i][0] = dataList.get(i)[n];
-        }
+            // Call the function to solve the quadratic regression
+            String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
 
-        // Fungsi untuk menyelesaikan regresi kuadratik
-        String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
-
-        // Menampilkan hasil nilai koefisien regresi
-        for (int i = 0; i < solusi.length; i++) {
-            System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
+            // Display the regression coefficients
+            for (int i = 0; i < solusi.length; i++) {
+                System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + fileName);
         }
     }
     // Fungsi untuk mencari nilai hasil regresi kuadratik berganda

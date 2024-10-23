@@ -839,8 +839,6 @@ public class Main {
             } catch (InputMismatchException e) {
                 System.out.println("Input tidak valid. Harap masukkan angka 1 atau 2.");
                 sc.next();  // Clear the invalid input from the scanner buffer
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
             }
             break;
         }
