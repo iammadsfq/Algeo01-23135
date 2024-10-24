@@ -4,8 +4,6 @@ public class Determinan {
         System.out.println("Determinan dari matrix");
         m.TulisMatrix();
         System.out.println("adalah " + result);
-
-        IO.tekanEnterUntukKembali();
     }
     public static void calculateDetByCofactorExpansion(Matrix matrix) {
         if (matrix.rows != matrix.cols) {
@@ -25,7 +23,5 @@ public class Determinan {
         System.out.println("Determinan dari matrix");
         matrix.TulisMatrix();
         System.out.println("adalah " + result);
-
-        IO.tekanEnterUntukKembali();
     }
 }

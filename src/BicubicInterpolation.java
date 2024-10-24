@@ -116,7 +116,6 @@ public class BicubicInterpolation {
         //result = returnBicubicInterpolation(vektor_a, a, b)
         System.out.println(result);
         Main.delay(1000);
-        IO.tekanEnterUntukKembali();
     }
     public static void bacaFileBicubicInterpolation(String fileName) {
 

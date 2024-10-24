@@ -20,7 +20,6 @@ public class SPL {
             solutions[i] = String.valueOf(determinan_i/determinan_a);
         }
         IO.tulisSolusiSPL(solutions);
-        IO.tekanEnterUntukKembali();
     }
     // Fungsi untuk menyelesaikan SPL menggunakan metode invers matriks
     public static void SolveInverseMatrix(Matrix matrix) {
@@ -36,7 +35,6 @@ public class SPL {
             solutions[i] = String.valueOf(hasil.contents[i][0]);
         }
         IO.tulisSolusiSPL(solutions);
-        IO.tekanEnterUntukKembali();
     }
 
     public static Matrix SPLByInverseMatrix(Matrix matrixKoefisien, Matrix vektorKonstanta) {
@@ -80,7 +78,6 @@ public class SPL {
         String[] Solutions = OperasiMatrix.SolveSPLGaussJordan(result);
 
         IO.tulisSolusiSPL(Solutions);
-        IO.tekanEnterUntukKembali();
 
     }
 
@@ -90,7 +87,6 @@ public class SPL {
         String[] Solutions = OperasiMatrix.SolveSPLGaussJordan(result);
 
         IO.tulisSolusiSPL(Solutions);
-        IO.tekanEnterUntukKembali();
     }
 
     public static boolean isVariable(char c) {

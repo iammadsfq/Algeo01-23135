@@ -271,6 +271,7 @@ public class Main {
         // Proceed with Gaussian Elimination
         if (matrix != null) {
             SPL.solveGaussianElimination(matrix); //Realisasi di file SPL.java
+            IO.tekanEnterUntukKembali();
             // ^Memproses matriks sampai menulis solusi
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
@@ -320,6 +321,7 @@ public class Main {
         // Proceed with Gaussian Elimination
         if (matrix != null) {
              SPL.solveGaussianJordanElimination(matrix);
+            IO.tekanEnterUntukKembali();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
@@ -373,6 +375,7 @@ public class Main {
         if (matrix != null) {
             if (matrix.cols == matrix.rows +1) {
                 SPL.SolveInverseMatrix(matrix);
+                IO.tekanEnterUntukKembali();
             } else {
                 System.out.println("Dimensi " + matrix.rows + "x" + matrix.cols + " tidak valid untuk penyelesaian SPL dengan matriks balikan.");
                 delay(2000);
@@ -431,6 +434,7 @@ public class Main {
         if (matrix != null) {
             if (matrix.cols == matrix.rows +1) {
                 SPL.solveCramerRule(matrix); // NAH BIKIN YG INI
+                IO.tekanEnterUntukKembali();
             } else {
                 System.out.println("Dimensi " + matrix.rows + "x" + matrix.cols + " tidak valid untuk penyelesaian SPL dengan kaidah cramer.");
                 delay(2000);
@@ -485,9 +489,11 @@ public class Main {
         // Proceed
         if (matrix != null) {
             Determinan.calculateDetByCofactorExpansion(matrix);
+            IO.tekanEnterUntukKembali();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
+
     }
     public static void determinantByRowReduction() {
         System.out.println("Memilih Metode Reduksi Baris.\n");
@@ -531,7 +537,7 @@ public class Main {
         // Proceed
         if (matrix != null) {
             Determinan.calculateDetByRowReduction(matrix);
-            matrix.TulisMatrix();
+            IO.tekanEnterUntukKembali();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
@@ -579,7 +585,7 @@ public class Main {
             }
         }
         Determinan.calculateDetBySarrus(matrix);
-        delay(1000);
+        IO.tekanEnterUntukKembali();
     }
     //END OF DETERMINAN
 
@@ -626,6 +632,7 @@ public class Main {
         // Proceed
         if (matrix != null) {
             Invers.getInversByAdjoint(matrix);
+            IO.tekanEnterUntukKembali();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
@@ -672,6 +679,7 @@ public class Main {
         // Proceed
         if (matrix != null) {
             Invers.getInversByRowReduction(matrix);
+            IO.tekanEnterUntukKembali();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
@@ -696,12 +704,14 @@ public class Main {
                 switch (inputChoice) {
                     case 1:
                         InterpolasiPolinomial.bacaKeyboardInterpolasiPolinomial(); //read matrix from keyboard input
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
                         InterpolasiPolinomial.bacaFileInterpolasiPolinomial(fileName);
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     default:
@@ -734,12 +744,14 @@ public class Main {
                 switch (inputChoice) {
                     case 1:
                         BicubicInterpolation.bacaKeyboardBicubicInterpolation(); //read matrix from keyboard input
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
                         BicubicInterpolation.bacaFileBicubicInterpolation(fileName);
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     default:
@@ -777,12 +789,14 @@ public class Main {
                         System.out.print("Masukkan jumlah sampel (m): ");
                         int m = sc.nextInt();
                         RegresiBerganda.regresiLinierBerganda(n, m, sc);
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
                         RegresiBerganda.bacaFileRegresiLinear(fileName);
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     default:
@@ -820,12 +834,14 @@ public class Main {
                         System.out.print("Masukkan jumlah sampel (m): ");
                         int m = sc.nextInt();
                         RegresiBerganda.regresiKuadratikBerganda(n, m, sc);
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
                         RegresiBerganda.bacaFileRegresiKuadratikBerganda(fileName);
+                        IO.tekanEnterUntukKembali();
                         break;
 
                     default:
