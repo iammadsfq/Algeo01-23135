@@ -1,1 +1,6 @@
-Dimensi 3x7 tidak valid untuk penyelesaian SPL dengan kaidah cramer.
+Matriks:
+0.0 1.0 0.0 0.0 1.0 0.0 2.0
+0.0 0.0 0.0 1.0 1.0 0.0 -1.0
+0.0 1.0 0.0 0.0 0.0 1.0 1.0
+
+Matriks memerlukan 6 persamaan untuk dapat diselesaikan.
