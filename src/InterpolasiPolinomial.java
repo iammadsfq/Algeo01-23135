@@ -80,27 +80,42 @@ public class InterpolasiPolinomial {
         }
 
         Matrix V_inv = OperasiMatrix.returnInversByAdjoint(V);
+        if (V_inv == null) {
+            System.out.println("Matriks Vandermonde tidak memiliki invers. Tidak bisa melakukan interpolasi.");
+            return;
+        }
         Matrix a = SPL.kalikanMatriks(V_inv, vektorY);
 
         double hasilInterpolasi = 0;
         System.out.print("f(x) = ");
-        hasilInterpolasi += a.contents[0][0]* Math.pow(xTarget, 0);
-        System.out.print(Math.round(a.contents[0][0]*10000)/10000);
+
+        // Handle first term (a0)
+        hasilInterpolasi += a.contents[0][0] * Math.pow(xTarget, 0);
+        System.out.print(Math.round(a.contents[0][0] * 10000) / 10000.0);
+
         for (int i = 1; i < a.rows; i++) {
-            if (a.contents[i][0] != 0) {
-                if (a.contents[i][0] > 0) {
+            if (Math.round(a.contents[i][0] * 10000) / 10000.0 != 0) { // Skip zero coefficients
+                double coef = Math.round(a.contents[i][0] * 10000) / 10000.0;
+
+                // Handle positive coefficients
+                if (coef > 0) {
                     System.out.print("+");
                 }
-                System.out.print(Math.round(a.contents[i][0]*10000)/10000);
-                System.out.print("x^");
-                System.out.print(i);
+
+                System.out.print(coef);
+                if (i == 1) {
+                    System.out.print("x"); // Print x for power 1
+                } else {
+                    System.out.print("x^" + i); // Print x^i for higher powers
+                }
+
+                hasilInterpolasi += a.contents[i][0] * Math.pow(xTarget, i);
             }
-            hasilInterpolasi += a.contents[i][0]* Math.pow(xTarget, i);
         }
 
         // Output hasil interpolasi
         System.out.println();
-        System.out.println("Hasil interpolasi untuk x = " + xTarget + " adalah: " + hasilInterpolasi);
+        System.out.println("Hasil interpolasi untuk x = " + xTarget + " adalah: " + Math.round(hasilInterpolasi * 10000) / 10000.0);
     }
     public static Matrix createVandermondeMatrix(double[] x, int n) {
         Matrix V = new Matrix(n, n);
