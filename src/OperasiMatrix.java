@@ -174,70 +174,111 @@ public class OperasiMatrix {
         int cols = result.cols;
         double eps = 1e-6;
 
-        for (int i = 0; i < Math.min(rows, cols); i++) {
-            if (Math.abs(result.contents[i][i]) < eps) {
-                // Mencari baris di bawah yang memiliki nilai non-nol di kolom yang sama
+        int pivotCol = 0;
+
+        for (int i = 0; i < rows && pivotCol < cols; i++) {
+            while (pivotCol < cols && Math.abs(result.contents[i][pivotCol]) < eps) {
+                boolean foundNonZero = false;
+
                 for (int k = i + 1; k < rows; k++) {
-                    if (Math.abs(result.contents[k][i]) > eps) {
+                    if (Math.abs(result.contents[k][pivotCol]) > eps) {
                         result = swapTwoRows(result, i, k);
-                        break; // Keluar dari loop setelah pertukaran
+                        foundNonZero = true;
+                        break;
                     }
+                }
+
+
+                if (!foundNonZero) {
+                    pivotCol++;
                 }
             }
 
-            // Jika setelah pencarian, elemen pivot masih nol, lanjutkan ke iterasi berikutnya
-            if (Math.abs(result.contents[i][i]) < eps) {
-                continue;
+
+            if (pivotCol >= cols) {
+                break;
             }
 
-            double pivot = result.contents[i][i];
+
+            double pivot = result.contents[i][pivotCol];
             if (Math.abs(pivot) > eps) {
-                for (int j = i; j < cols; j++) {
+                for (int j = pivotCol; j < cols; j++) {
                     result.contents[i][j] /= pivot;
                 }
             }
 
             for (int j = i + 1; j < rows; j++) {
-                if (Math.abs(result.contents[j][i]) > eps) {
-                    double factor = result.contents[j][i];
-                    for (int k = i; k < cols; k++) {
+                if (Math.abs(result.contents[j][pivotCol]) > eps) {
+                    double factor = result.contents[j][pivotCol];
+                    for (int k = pivotCol; k < cols; k++) {
                         result.contents[j][k] -= factor * result.contents[i][k];
                     }
                 }
             }
+
+            pivotCol++;
         }
 
-        for (int i = 0; i < rows; i++){
-            for (int j =0; j < cols; j++){
-                if (Math.abs(result.contents[i][j]) < eps){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (Math.abs(result.contents[i][j]) < eps) {
                     result.contents[i][j] = 0;
                 }
             }
         }
+
         return result;
     }
 
 
 
-    public static Matrix ReductionREF(Matrix m){
-        Matrix result = copyMatrix(m);
-        Matrix ref = REF(result); //Memanggil REF untuk melanjutkan Matriks eselon baris tereduksi
+    public static Matrix ReductionREF(Matrix m) {
+        Matrix result = REF(m);
         int rows = result.rows;
         int cols = result.cols;
+        double eps = 1e-6;
 
-        for (int i = 0; i < rows; i++){
-            // mengubah elemen diatas pivot menjadi nol
-            for (int j = 0; j < i; j++) {
-                if (ref.contents[j][i] != 0) {
-                    double factor = ref.contents[j][i];
-                    for (int k = i; k < cols; k++) {
-                        ref.contents[j][k] -= factor * ref.contents[i][k];
+        for (int i = rows - 1; i >= 0; i--) {
+            int pivotCol = -1;
+            for (int j = 0; j < cols; j++) {
+                if (Math.abs(result.contents[i][j]) > eps) {
+                    pivotCol = j;
+                    break;
+                }
+            }
+
+            if (pivotCol == -1) {
+                continue;
+            }
+
+            for (int k = i - 1; k >= 0; k--) {
+                if (i == rows - 1 && pivotCol == cols - 1) {
+                    continue;
+                }
+
+                double factor = result.contents[k][pivotCol];
+                if (Math.abs(factor) > eps) {
+                    for (int j = pivotCol; j < cols ; j++) {
+                        result.contents[k][j] -= factor * result.contents[i][j];
                     }
                 }
-            }}
-        return ref;
+            }
+        }
 
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (Math.abs(result.contents[i][j]) < eps) {
+                    result.contents[i][j] = 0;
+                }
+            }
+        }
+
+        return result;
     }
+
+
+
+
 
 
     // Menukar dua baris
