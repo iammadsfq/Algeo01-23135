@@ -15,8 +15,8 @@ public class RegresiBerganda {
         int m = sc.nextInt();
 
         // Memanggil metode untuk menghitung regresi kuadratik berganda
-        // regresiLinierBerganda(n,m,sc);
-        // regresiKuadratikBerganda(n,m,sc);
+        regresiLinierBerganda(n,m,sc);
+//        regresiKuadratikBerganda(n,m,sc);
     }
     public static void regresiKuadratikBerganda(int n, int m, Scanner sc) {
         // Menghitung total jumlah kolom dalam proses regresi kuadratik berganda
@@ -55,6 +55,12 @@ public class RegresiBerganda {
             y.contents[i][0] = sc.nextDouble();  // Melihat nilai variabel y untuk setiap sampel
         }
 
+        double[] variable = new double[n];
+        for(int i = 0; i < m; i++){
+            System.out.print("Masukkan variable x" + (i+1) + " untuk menaksir y:");
+            variable[i] = sc.nextDouble();
+        }
+
         // Fungsi untuk menyelesaikan regresi kuadratik
         String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
 
@@ -62,6 +68,21 @@ public class RegresiBerganda {
         for (int i = 0; i < solusi.length; i++) {
             System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
         }
+
+        double[] solusiDouble = new double[n];
+        for (int i = 0; i < n; i++) {
+            solusiDouble[i] = Double.parseDouble(solusi[i]);
+        }
+
+        double Taksiran = solusiDouble[0];
+        for (int i = 1; i < n; i++) {
+            Taksiran += solusiDouble[i] * variable[i];
+        }
+
+
+        String taksiranString = Double.toString(Taksiran);
+
+        System.out.printf("Hampiran (taksiran) nilai f(x): " + taksiranString);
     }
     public static void bacaFileRegresiKuadratikBerganda(String fileName) {
         try {
@@ -153,6 +174,12 @@ public class RegresiBerganda {
             y.contents[i][0] = sc.nextDouble();  // Membaca nilai variabel y untuk setiap sampel
         }
 
+        double[] variableTaksiran = new double[n];
+        for(int i = 0; i < n; i++){
+            System.out.print("Masukkan variable x" + (i + 1) + " untuk menaksir y:");
+            variableTaksiran[i] = sc.nextDouble();
+        }
+
         // Fungsi untuk menyelesaikan regresi linier
         String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
 
@@ -160,6 +187,12 @@ public class RegresiBerganda {
         for (int i = 0; i < solusi.length; i++) {
             System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
         }
+
+        String taksiran = hampiran(n, solusi, variableTaksiran);
+        System.out.printf("Hampiran (taksiran) nilai f(x): " + taksiran);
+
+
+
     }
 
     public static void bacaFileRegresiLinear(String fileName) throws FileNotFoundException {
@@ -209,8 +242,25 @@ public class RegresiBerganda {
         for (int i = 0; i < solusi.length; i++) {
             System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
         }
+
+
     }
 
+    public static String hampiran(int n, String[] solusi, double[] variable){
+
+        double[] solusiDouble = new double[n+1];
+        for (int i = 0; i <= n; i++) {
+            solusiDouble[i] = Double.parseDouble(solusi[i]);
+        }
+
+        double Taksiran = solusiDouble[0];
+
+        for (int i = 1; i <= n; i++) {
+            Taksiran += solusiDouble[i] * variable[i-1];
+        }
+
+        return Double.toString(Taksiran);
+    }
 
 
 
