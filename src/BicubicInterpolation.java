@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class BicubicInterpolation {
@@ -34,7 +36,7 @@ public class BicubicInterpolation {
         while (true) {
             System.out.print("Masukkan nilai a (0 < a < 1): ");
             a = sc.nextDouble();
-            if (a > 0 && a < 1) {
+            if (a >= 0 && a <= 1) {
                 break; // Nilai a valid
             } else {
                 System.out.println("Nilai a tidak valid. Silakan masukkan lagi.");
@@ -45,7 +47,7 @@ public class BicubicInterpolation {
         while (true) {
             System.out.print("Masukkan nilai b (0 < b < 1): ");
             b = sc.nextDouble();
-            if (b > 0 && b < 1) {
+            if (b >= 0 && b <= 1) {
                 break; // Nilai b valid
             } else {
                 System.out.println("Nilai b tidak valid. Silakan masukkan lagi.");
@@ -114,12 +116,71 @@ public class BicubicInterpolation {
         Matrix vektor_a = SPL.kalikanMatriks(invers_x, vektor_y);
         double result = returnBicubicInterpolation(vektor_a, a, b);
         //result = returnBicubicInterpolation(vektor_a, a, b)
+        System.out.print("f(" + a + "," + b + ") = ");
         System.out.println(result);
         Main.delay(1000);
     }
-    public static void bacaFileBicubicInterpolation(String fileName) {
+    public static void bacaFileBicubicSpline(String fileName) {
+        try {
+            File file = new File("test/" + fileName);
+            Scanner sc = new Scanner(file);
 
+            // Initialize a 4x4 matrix
+            Matrix matrix = new Matrix(4, 4);
+
+            // Read the 4x4 matrix
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (sc.hasNextDouble()) {
+                        double value = sc.nextDouble();
+                        matrix.setElement(i, j, value);
+                    } else {
+                        System.out.println("Error: Not enough elements in the file for a 4x4 matrix.");
+                        sc.close();
+                        return;
+                    }
+                }
+            }
+
+            // Read values for a and b (the coordinates for interpolation)
+            double a = 0;
+            double b = 0;
+
+            // Read a
+            if (sc.hasNextDouble()) {
+                a = sc.nextDouble();
+            } else {
+                System.out.println("Error: Missing value for a in the file.");
+                sc.close();
+                return;
+            }
+
+            // Read b
+            if (sc.hasNextDouble()) {
+                b = sc.nextDouble();
+            } else {
+                System.out.println("Error: Missing value for b in the file.");
+                sc.close();
+                return;
+            }
+
+            // Close the scanner
+            sc.close();
+
+            // Validate a and b
+            if (a < 0 || a > 1 || b < 0 || b > 1) {
+                System.out.println("Nilai a dan b tidak valid. Harus 0 < a < 1 dan 0 < b < 1.");
+                return;
+            }
+
+            // Call the bicubic spline interpolation method
+            bicubicSplineInterpolation(matrix, a, b);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File tidak ditemukan: " + fileName);
+        }
     }
+
     public static double returnBicubicInterpolation(Matrix vektor_a, double x, double y) {
         double result = 0;
         int i,j;
