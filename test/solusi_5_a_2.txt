@@ -1,5 +1,2 @@
-Hasil Perhitungan Interpolasi Polinom
-Penjabaran f(x):
-f(x) = - 3.360838505161542E-14x^6 + 1.395966765938392E-13x^5 + 0.026041666666442493x^4 + 1.748103953800361E-13x^3 + 0.19739583333326544x^2 + 0.24000000000001184x - 0.02297656250000066
-Hasil substitusi dengan nilai x = 0.55:
-f(0.55) = 0.17111865234374998
+f(x) = 0+0x^1+0x^2+0x^3+0x^4+0x^50x^6
+Hasil interpolasi untuk x = 0.55 adalah: 0.17111865234412768
