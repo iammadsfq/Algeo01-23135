@@ -1,8 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
-
-import static java.lang.Math.pow;
 
 public class InterpolasiPolinomial {
     public static void bacaKeyboardInterpolasiPolinomial() {
@@ -31,25 +30,37 @@ public class InterpolasiPolinomial {
 
         // Bentuk Matriks Vandermonde
         Matrix V = createVandermondeMatrix(x, n);
-        // Bentuk vektor_y
         Matrix vektorY = arrayToVector(y, n);
 
         // Lakukan interpolasi
-        interpolate(V, vektorY, xTarget);
+        double hasilInterpolasi = interpolate(V, vektorY, xTarget);
+
+        // Tanyakan apakah ingin menyimpan hasil
+        System.out.print("Apakah Anda ingin menyimpan hasil? (ya/tidak): ");
+        String saveResponse = sc.next();
+
+        if (saveResponse.equalsIgnoreCase("ya")) {
+            System.out.print("Masukkan nama file untuk menyimpan hasil: ");
+            String fileName = sc.next();
+            saveOutputToFile(fileName, hasilInterpolasi, xTarget);
+        }
     }
+
     public static void bacaFileInterpolasiPolinomial(String fileName) {
         try {
             File file = new File("test/" + fileName);
             Scanner sc = new Scanner(file);
-
             int n = 0;
+
+            // Count the number of lines
             while (sc.hasNextLine()) {
                 sc.nextLine();
                 n++;
             }
 
-            sc = new Scanner(file);  // Restart scanner
-            n--;  // ga ngitung baris terakhir (krn baris terakhir itu buat x yg diinterpolasiin)
+            sc.close(); // Close the scanner before reopening
+            sc = new Scanner(file); // Restart scanner
+            n--; // Exclude the last line for interpolation target
 
             double[] x = new double[n];
             double[] y = new double[n];
@@ -59,33 +70,43 @@ public class InterpolasiPolinomial {
                     y[i] = sc.nextDouble();
                 }
             }
-            double xTarget = sc.nextDouble();
-
-            sc.close(); //selesai scanner
+            double xTarget = sc.nextDouble(); // Read the target value
 
             Matrix V = createVandermondeMatrix(x, n);
             Matrix vektorY = arrayToVector(y, n);
+            double hasilInterpolasi = interpolate(V, vektorY, xTarget);
 
-            interpolate(V, vektorY, xTarget);
+            // Tanyakan apakah ingin menyimpan hasil
+            Scanner inputScanner = new Scanner(System.in);
+            System.out.print("Apakah Anda ingin menyimpan hasil? (ya/tidak): ");
+            String saveResponse = inputScanner.next();
+
+            if (saveResponse.equalsIgnoreCase("ya")) {
+                System.out.print("Masukkan nama file untuk menyimpan hasil: ");
+                String fileNameToSave = inputScanner.next();
+                saveOutputToFile(fileNameToSave, hasilInterpolasi, xTarget);
+            }
+            inputScanner.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("File tidak ditemukan: " + fileName);
+        } catch (Exception e) {
+            System.out.println("Terjadi kesalahan saat membaca file: " + e.getMessage());
         }
     }
 
-    public static void interpolate(Matrix V, Matrix vektorY, double xTarget) {
+    public static double interpolate(Matrix V, Matrix vektorY, double xTarget) {
         if (OperasiMatrix.cofactorExpansion(V, V.cols) == 0) {
             System.out.println("Matriks Vandermonde singular (determinannya 0). Tidak bisa melakukan interpolasi.");
-            return;
+            return Double.NaN; // Return NaN if singular
         }
 
         Matrix V_inv = OperasiMatrix.returnInversByGaussJordan(V, V.rows);
-        Matrix identitas = SPL.kalikanMatriks(V, V_inv);
-        identitas.TulisMatrix();
         if (V_inv == null) {
             System.out.println("Matriks Vandermonde tidak memiliki invers. Tidak bisa melakukan interpolasi.");
-            return;
+            return Double.NaN; // Return NaN if no inverse
         }
+
         Matrix a = SPL.kalikanMatriks(V_inv, vektorY);
 
         double hasilInterpolasi = 0;
@@ -118,7 +139,19 @@ public class InterpolasiPolinomial {
         // Output hasil interpolasi
         System.out.println();
         System.out.println("Hasil interpolasi untuk x = " + xTarget + " adalah: " + Math.round(hasilInterpolasi * 10000) / 10000.0);
+
+        return hasilInterpolasi; // Return the result for file saving
     }
+
+    public static void saveOutputToFile(String fileName, double hasilInterpolasi, double xTarget) {
+        try (PrintWriter writer = new PrintWriter(new File(fileName))) {
+            writer.println("Hasil interpolasi untuk x = " + xTarget + " adalah: " + Math.round(hasilInterpolasi * 10000) / 10000.0);
+            System.out.println("Hasil telah disimpan di " + fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
+        }
+    }
+
     public static Matrix createVandermondeMatrix(double[] x, int n) {
         Matrix V = new Matrix(n, n);
         for (int i = 0; i < n; i++) {
@@ -128,15 +161,12 @@ public class InterpolasiPolinomial {
         }
         return V;
     }
+
     public static Matrix arrayToVector(double[] l, int n) {
         Matrix result = new Matrix(n, 1);
-        int i;
-        for (i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             result.contents[i][0] = l[i];
         }
         return result;
     }
-
-
-
 }

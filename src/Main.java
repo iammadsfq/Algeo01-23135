@@ -795,7 +795,7 @@ public class Main {
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
-                        RegresiBerganda.bacaFileRegresiLinear(fileName);
+                        RegresiBerganda.bacaFileRegresiLinear(fileName, sc);
                         IO.tekanEnterUntukKembali();
                         break;
 
@@ -838,7 +838,7 @@ public class Main {
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
-                        RegresiBerganda.bacaFileRegresiKuadratik(fileName);
+                        RegresiBerganda.bacaFileRegresiKuadratik(fileName, sc);
                         IO.tekanEnterUntukKembali();
                         break;
 
