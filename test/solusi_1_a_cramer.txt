@@ -1,1 +1,3 @@
 Determinan matriks adalah 0.
+
+Tekan Enter untuk kembali ke menu utama...

@@ -2,3 +2,4 @@
 0.0	0.0	0.0	1.0	0.0	1.0	-2.0	
 0.0	0.0	0.0	0.0	1.0	-1.0	1.0	
 x1 = t, x2 = 1.0-r, x3 = s, x4 = -2.0-r, x5 = 1.0+r, x6 = r
+Tekan Enter untuk kembali ke menu utama...

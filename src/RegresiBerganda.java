@@ -67,64 +67,48 @@ public class RegresiBerganda {
         try {
             File file = new File("test/" + fileName);
             Scanner fileScanner = new Scanner(file);
-
-            // Use ArrayList to temporarily hold data from the file
             ArrayList<double[]> dataList = new ArrayList<>();
-
-            // Read all data from the file
             while (fileScanner.hasNextLine()) {
                 String[] lineData = fileScanner.nextLine().split(" ");
                 double[] rowData = new double[lineData.length];
                 for (int i = 0; i < lineData.length; i++) {
-                    rowData[i] = Double.parseDouble(lineData[i]); // Convert each element to double
+                    rowData[i] = Double.parseDouble(lineData[i]);
                 }
-                dataList.add(rowData); // Add row data to the list
+                dataList.add(rowData);
             }
             fileScanner.close();
 
-            // Calculate n and m
-            int m = dataList.size(); // number of rows (samples)
-            int n = dataList.get(0).length - 1; // number of independent variables (excluding y)
-
-            // Calculate total columns needed for multiple quadratic regression
+            int m = dataList.size();
+            int n = dataList.get(0).length - 1;
             int totalColumns = 1 + n + n + (n * (n - 1)) / 2;
-
-            // Initialize the X matrix (design matrix) and y vector (response variable)
-            Matrix X = new Matrix(m, totalColumns);  // Matrix X for input variables
-            Matrix y = new Matrix(m, 1);             // Vector y for the dependent variable
-
-            // Insert values into matrices X and y
+            Matrix X = new Matrix(m, totalColumns);
+            Matrix y = new Matrix(m, 1);
             for (int i = 0; i < m; i++) {
-                X.contents[i][0] = 1; // Intercept term (constant 1)
+                X.contents[i][0] = 1;
                 double[] xi = new double[n];
                 for (int j = 0; j < n; j++) {
-                    xi[j] = dataList.get(i)[j];      // Get the independent variable values
-                    X.contents[i][j + 1] = xi[j];    // Insert linear term values into X
+                    xi[j] = dataList.get(i)[j];
+                    X.contents[i][j + 1] = xi[j];
                 }
 
-                // Add the squared terms for each variable
                 int index = n + 1;
                 for (int j = 0; j < n; j++) {
-                    X.contents[i][index] = xi[j] * xi[j]; // Square each variable
+                    X.contents[i][index] = xi[j] * xi[j];
                     index++;
                 }
 
-                // Add interaction terms between variables
                 for (int j = 0; j < n - 1; j++) {
                     for (int k = j + 1; k < n; k++) {
-                        X.contents[i][index] = xi[j] * xi[k]; // Product of xi and xk (interaction term)
+                        X.contents[i][index] = xi[j] * xi[k];
                         index++;
                     }
                 }
 
-                // Store the dependent variable (y) value
                 y.contents[i][0] = dataList.get(i)[n];
             }
 
-            // Call the function to solve the quadratic regression
             String[] solusi = multipleRegressionSolution(X, y, m, totalColumns - 1);
 
-            // Display the regression coefficients
             for (int i = 0; i < solusi.length; i++) {
                 System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
             }
@@ -143,6 +127,7 @@ public class RegresiBerganda {
 
         // Matriks augmented dari nilai  XTX dengan nilai XTy
         Matrix augmentedMatrix = OperasiMatrix.toAugmented(XTX, XTy);
+        augmentedMatrix.TulisMatrix();
 
         // Menggunakan metode eliminasi SPL Gauss dan mengembalikan solusi berupa nilai koefisien regresi
         return OperasiMatrix.SolveSPLGaussJordan(OperasiMatrix.ReductionREF(augmentedMatrix));
