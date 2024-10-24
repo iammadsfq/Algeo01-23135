@@ -79,7 +79,9 @@ public class InterpolasiPolinomial {
             return;
         }
 
-        Matrix V_inv = OperasiMatrix.returnInversByAdjoint(V);
+        Matrix V_inv = OperasiMatrix.returnInversByGaussJordan(V, V.rows);
+        Matrix identitas = SPL.kalikanMatriks(V, V_inv);
+        identitas.TulisMatrix();
         if (V_inv == null) {
             System.out.println("Matriks Vandermonde tidak memiliki invers. Tidak bisa melakukan interpolasi.");
             return;
@@ -91,18 +93,18 @@ public class InterpolasiPolinomial {
 
         // Handle first term (a0)
         hasilInterpolasi += a.contents[0][0] * Math.pow(xTarget, 0);
-        System.out.print(Math.round(a.contents[0][0] * 10000) / 10000.0);
+        System.out.print(Math.round(a.contents[0][0] * 10000) / 10000);
 
         for (int i = 1; i < a.rows; i++) {
-            if (Math.round(a.contents[i][0] * 10000) / 10000.0 != 0) { // Skip zero coefficients
-                double coef = Math.round(a.contents[i][0] * 10000) / 10000.0;
+            if (a.contents[i][0] != 0) { // Skip zero coefficients
+                double coef = a.contents[i][0];
 
                 // Handle positive coefficients
                 if (coef > 0) {
                     System.out.print("+");
                 }
 
-                System.out.print(coef);
+                System.out.print(Math.round(a.contents[i][0] * 10000) / 10000);
                 if (i == 1) {
                     System.out.print("x"); // Print x for power 1
                 } else {
@@ -134,6 +136,7 @@ public class InterpolasiPolinomial {
         }
         return result;
     }
+
 
 
 }
