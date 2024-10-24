@@ -15,7 +15,6 @@ public class SPL {
         Matrix matrix_i;
         for (i = 0; i < matrix_a.cols; i++) {
             matrix_i = OperasiMatrix.replaceColWithVector(matrix_a, vektor_b, i);
-            matrix_i.TulisMatrix();
             double determinan_i = OperasiMatrix.returnDetByRowReduction(matrix_i, matrix_i.rows);
             solutions[i] = String.valueOf(determinan_i/determinan_a);
         }
