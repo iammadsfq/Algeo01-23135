@@ -198,7 +198,6 @@ public class BicubicInterpolation {
                 String fileNameToSave = inputScanner.next();
                 saveOutputToFile(fileNameToSave, result, a, b);
             }
-            inputScanner.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("File tidak ditemukan: " + fileName);
