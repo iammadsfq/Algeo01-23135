@@ -202,11 +202,8 @@ public class RegresiBerganda {
         fileScanner.close();
 
         // Menghitung m dan n
-        int m = dataList.size() - 1; // Jumlah baris untuk regresi, baris terakhir digunakan untuk variabel baru
+        int m = dataList.size(); // Jumlah baris (sampel)
         int n = dataList.get(0).length - 1; // Jumlah variabel bebas (tanpa y)
-
-        // Mengambil baris terakhir sebagai variabelBaru (tanpa y)
-        double[] variabelBaru = dataList.remove(dataList.size() - 1);
 
         // Menghitung total kolom yang dibutuhkan untuk regresi linier berganda
         int totalColumns = 1 + n; // 1 untuk intercept dan n untuk variabel bebas
@@ -233,11 +230,8 @@ public class RegresiBerganda {
             System.out.printf("Koefisien Regresi β%d = %s\n", i, solusi[i]);
         }
 
-        // Menghitung dan menampilkan hasil taksiran (prediksi) berdasarkan variabelBaru
-        String taksiran = hampiran(n, solusi, variabelBaru);
-        System.out.printf("Hampiran (taksiran) nilai f(x): %s\n", taksiran);
-    }
 
+    }
 
     public static String hampiran(int n, String[] solusi, double[] variable){
 
