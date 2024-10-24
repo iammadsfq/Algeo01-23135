@@ -102,6 +102,9 @@ public class OperasiMatrix {
     public static Matrix returnInversByAdjoint(Matrix matrix) {
         int n = matrix.rows;
         Matrix adjoint = resultAdjoint(matrix);
+        if (adjoint == null) {
+            return null;
+        }
         double determinant = OperasiMatrix.cofactorExpansion(matrix, matrix.rows);
         if (determinant == 0) {
             return null;
@@ -121,7 +124,8 @@ public class OperasiMatrix {
         Matrix adjoint = new Matrix(n, n);
         double determinant = OperasiMatrix.cofactorExpansion(matrix, matrix.rows);
         if (determinant == 0) { // Jika determinan 0, matriks tidak memiliki invers
-            throw new ArithmeticException("Matriks tidak memiliki invers karena determinan adalah 0.");
+            System.out.println("Matriks tidak memiliki invers karena determinan adalah 0.");
+            return null;
         }
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {

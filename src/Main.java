@@ -743,7 +743,7 @@ public class Main {
                     case 2:
                         System.out.print("Masukkan nama file (contoh: matrix.txt): ");
                         String fileName = sc.next();  // Capture file name input
-                        InterpolasiPolinomial.bacaFileInterpolasiPolinomial(fileName);
+                        BicubicInterpolation.bacaFileBicubicInterpolation(fileName);
                         break;
 
                     default:
