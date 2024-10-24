@@ -5,19 +5,6 @@ import java.util.Scanner;
 
 public class RegresiBerganda {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        // Proses input jumlah peubah (n) dan sampel (m)
-        System.out.print("Masukkan jumlah peubah (n): ");
-        int n = sc.nextInt();
-        System.out.print("Masukkan jumlah sampel (m): ");
-        int m = sc.nextInt();
-
-        // Memanggil metode untuk menghitung regresi kuadratik berganda
-        regresiLinierBerganda(n,m,sc);
-//        regresiKuadratikBerganda(n,m,sc);
-    }
     public static void regresiKuadratikBerganda(int n, int m, Scanner sc) {
         // Menghitung total jumlah kolom dalam proses regresi kuadratik berganda
         int totalColumns = 1 + n + n + (n * (n - 1)) / 2;
