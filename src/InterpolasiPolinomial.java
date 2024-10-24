@@ -86,7 +86,6 @@ public class InterpolasiPolinomial {
                 String fileNameToSave = inputScanner.next();
                 saveOutputToFile(fileNameToSave, hasilInterpolasi, xTarget);
             }
-            inputScanner.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("File tidak ditemukan: " + fileName);
@@ -125,7 +124,7 @@ public class InterpolasiPolinomial {
                     System.out.print("+");
                 }
 
-                System.out.print(Math.round(a.contents[i][0] * 10000) / 10000);
+                System.out.print((a.contents[i][0]));
                 if (i == 1) {
                     System.out.print("x"); // Print x for power 1
                 } else {
