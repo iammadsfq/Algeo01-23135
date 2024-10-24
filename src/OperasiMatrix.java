@@ -138,19 +138,30 @@ public class OperasiMatrix {
     }
 
     //Fungsi mencari determinan dengan reduksi baris
-    public static double returnDetByRowReduction(Matrix m, int rows){
+    public static double returnDetByRowReduction(Matrix m, int rows) {
         Matrix result = copyMatrix(m);
         int cols = result.cols;
         double det = 1;
+        boolean swapped = false;
 
         for (int i = 0; i < rows; i++) {
-
-            // Jika salah satu elemen diagonal bernilai 0
+            // Handle zero diagonal element by swapping rows
             if (result.contents[i][i] == 0) {
-                return 0;
+                boolean rowSwapped = false;
+                for (int k = i + 1; k < rows; k++) {
+                    if (result.contents[k][i] != 0) {
+                        result = swapTwoRows(result, i, k);  // Swap rows
+                        swapped = !swapped;  // Flip the swapped flag to keep track of sign change
+                        rowSwapped = true;
+                        break;
+                    }
+                }
+                if (!rowSwapped) {
+                    return 0;  // If no non-zero pivot found, determinant is 0
+                }
             }
 
-            // Eliminasi nilai dibawah elemen diagonal
+            // Eliminate values below the diagonal element
             for (int j = i + 1; j < rows; j++) {
                 double factor = result.contents[j][i] / result.contents[i][i];  // Normalize by the pivot
                 for (int k = i; k < cols; k++) {
@@ -159,14 +170,19 @@ public class OperasiMatrix {
             }
         }
 
-        //Perkalian elemen diagonal
+        // Multiply diagonal elements to get the determinant
         for (int i = 0; i < rows; i++) {
             det *= result.contents[i][i];
         }
 
-        return det;
+        // Adjust the sign if rows were swapped an odd number of times
+        if (swapped) {
+            det *= -1;
+        }
 
+        return det;
     }
+
 
     public static Matrix REF(Matrix m) {
         Matrix result = copyMatrix(m);

@@ -272,7 +272,6 @@ public class Main {
         if (matrix != null) {
             SPL.solveGaussianElimination(matrix); //Realisasi di file SPL.java
             // ^Memproses matriks sampai menulis solusi
-            matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
@@ -321,7 +320,6 @@ public class Main {
         // Proceed with Gaussian Elimination
         if (matrix != null) {
              SPL.solveGaussianJordanElimination(matrix);
-            matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
@@ -375,7 +373,6 @@ public class Main {
         if (matrix != null) {
             if (matrix.cols == matrix.rows +1) {
                 SPL.SolveInverseMatrix(matrix);
-                matrix.TulisMatrix();
             } else {
                 System.out.println("Dimensi " + matrix.rows + "x" + matrix.cols + " tidak valid untuk penyelesaian SPL dengan matriks balikan.");
                 delay(2000);
@@ -488,7 +485,6 @@ public class Main {
         // Proceed
         if (matrix != null) {
             Determinan.calculateDetByCofactorExpansion(matrix);
-            matrix.TulisMatrix();
         } else {
             System.out.println("Terjadi kesalahan dalam membaca matrix.");
         }
